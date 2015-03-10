@@ -1,0 +1,1 @@
+<a href="/" class="main-pjax">go</a>

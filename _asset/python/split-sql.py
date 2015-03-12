@@ -12,9 +12,11 @@ for table in tables:
     contents = source_file.read().split('INSERT INTO');
     source_file.close();
     counter = 1
-    for content in contents:
-        target_file_name = '../sql/data/' + str('%03d' %counter) + '.sql';
-        target_file = open(target_file, 'w')
-        target_file.write(content)
+    for content in contents[1:]:
+        target_file_name = '../sql/data/' + table + '__' + str('%03d' %counter) + '.sql';
+        target_file = open(target_file_name, 'w')
+        target_file.write('INSERT INTO' + content)
         target_file.close()
+        # sys.stdout.write('\rSpliting ' + table + ' segment ' + str(counter) + '...')
         counter = counter + 1
+    print table + ' => done'

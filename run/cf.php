@@ -2,7 +2,7 @@
 function recommend($user) {
 
     // read the set
-    $file = @fopen('_asset/small.csv', "r");
+    $file = @fopen('small.csv', "r");
     $users = array();
     $items = array();
     $temp_prefs = array();
@@ -81,23 +81,26 @@ function recommend($user) {
         echo "$key : $value\n";
     }
 
+    echo '<pre>';
+    // for ($i = 0; $i < $items_quantity; $i++) {
+    //     for ($j = 0; $j < $items_quantity; $j++) {
+    //         echo "\t".$co_occurrence[$i][$j];
+    //     }
+    //     echo '<br>';
+    // }
+    // print_r($train);
+    // print_r($users);
+    // print_r($items);
+    // var_dump($prefs);
+    // var_dump($score);
+    echo '</pre>';
+
 }
 
 
 echo '<pre>';
-// for ($i = 0; $i < $items_quantity; $i++) {
-//     for ($j = 0; $j < $items_quantity; $j++) {
-//         echo "\t".$co_occurrence[$i][$j];
-//     }
-//     echo '<br>';
-// }
-// print_r($train);
-// print_r($users);
-// print_r($items);
-// var_dump($prefs);
-// var_dump($score);
 $start = microtime(TRUE);
-for ($x = 0; $x < 5; $x ++) {
+for ($x = 1; $x <= 5; $x ++) {
     echo "user $x recommend result:<br>";
     recommend($x);
     echo '<br>';

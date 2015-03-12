@@ -61,14 +61,9 @@ recommend <-function (udata = udata, co = coMatrix, num = 0) {
   r <- co %*% userx
   
   # Recommended Sort
-  r[udata$idx] <-0
+   r[udata$idx] <-0
   idx <-order(r, decreasing = TRUE)
   topn <-data.frame (user = rep(udata$user[1], length(idx)), item = items[idx], val = r[idx])
-
-  # Recommended results take months before the num
-  if (num> 0) {
-    topn <-head (topn, num)
-  }
 
   # Recommended results take months before the num
   if (num> 0) {
@@ -85,5 +80,5 @@ recommendation<-data.frame()
 # Generating recommendations for all of the users
 for(i in 1:length(users)){
   udata<-data[which(data$user==users[i]),]
-  recommendation<-rbind(recommendation,recommend(udata,co,0)) 
+  recommendation<-rbind(recommendation,recommend(udata,co,7)) 
 }

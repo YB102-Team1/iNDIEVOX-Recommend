@@ -25,5 +25,5 @@ Thumbs.db
 ###################
 /workspace/
 
-# FB Admin Account Info #
-/_asset/python/param.py
+# sql segment #
+/_asset/sql/data/*.seg

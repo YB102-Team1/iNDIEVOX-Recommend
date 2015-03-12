@@ -7,7 +7,7 @@ echo "<pre>";
 foreach (glob(DATA_SQL_ROOT.'/*_structure.sql') as $sql_path) {
     $sql = file_get_contents($sql_path);
     $create_result = $db_obj->query($sql);
-    // var_dump($create_result);
+    var_dump($create_result);
     echo "Table ".str_replace('_structure.sql', '', str_replace(DATA_SQL_ROOT.'/', '', $sql_path))." created.\n";
 }
 
@@ -18,7 +18,7 @@ foreach ($tables as $table_name) {
     foreach (glob(DATA_SQL_ROOT.'/'.$table_name.'__*.sql') as $sql_path) {
         $sql = file_get_contents($sql_path);
         $create_result = $db_obj->query($sql);
-        // var_dump($create_result);
+        var_dump($create_result);
         echo "\tsegment ".str_replace('.sql', '', str_replace(DATA_SQL_ROOT.'/'.$table_name.'_', '', $sql_path))." imported.\n";
     }
     echo "\n";

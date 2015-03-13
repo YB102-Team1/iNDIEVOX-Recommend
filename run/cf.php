@@ -5,7 +5,7 @@ function recommend($instance_user, $item_id, $genre, $debug = false) {
     $item_array = array();
     $temp_pref_array = array();
     $train_model = array();
-    
+
     // read the set
     $file = @fopen('small.csv', "r");
     while (!feof($file)) {

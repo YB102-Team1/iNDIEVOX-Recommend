@@ -1,61 +1,66 @@
 <?php
-function recommend($user) {
+function recommend($instance_user, $item_id, $genre, $debug = false) {
 
+    $user_array = array();
+    $item_array = array();
+    $temp_pref_array = array();
+    $train_model = array();
+    
     // read the set
     $file = @fopen('small.csv', "r");
-    $users = array();
-    $items = array();
-    $temp_prefs = array();
-    $train = array();
     while (!feof($file)) {
         $data_string = fgets($file);
         $data_array = explode(', ', $data_string);
+        $user = $data_array[0];
+        $item = $data_array[1];
+        $pref = $data_array[2];
+
         $data = array(
-            "user"=>$data_array[0],
-            "item"=>$data_array[1],
-            "pref"=>$data_array[2]
+            "user"=>$user,
+            "item"=>$item,
+            "pref"=>$pref
         );
-        array_push($users, $data_array[0]);
-        array_push($items, $data_array[1]);
-        if ($data_array[0] == $user) {
-            $temp_prefs[$data_array[1]] = $data_array[2];
+        array_push($user_array, $user);
+        array_push($item_array, $item);
+        if ($user == $instance_user) {
+            $temp_pref_array[$item] = $pref;
         }
-        array_push($train, $data);
+        array_push($train_model, $data);
     }
 
     // user and item list
-    $users = array_unique($users);
-    sort($users);
-    $items = array_unique($items);
-    sort($items);
+    $user_array = array_unique($user_array);
+    sort($user_array);
+    $item_array = array_unique($item_array);
+    sort($item_array);
 
     // complete the prefs array
-    $prefs = array();
-    foreach ($items as $item_index => $item_value) {
-        if (isset($temp_prefs[$item_value])) {
-            $prefs[$item_index] = (float)$temp_prefs[$item_value];
+    $pref_array = array();
+    foreach ($item_array as $item_index => $item_value) {
+        if (isset($temp_pref_array[$item_value])) {
+            $pref_array[$item_index] = (float)$temp_pref_array[$item_value];
         } else {
-            $prefs[$item_index] = 0.0;
+            $pref_array[$item_index] = 0.0;
         }
     }
-    unset($temp_prefs);
+    unset($temp_pref_array);
 
 
     // establish item index in set
-    foreach ($train as $data_index => $data) {
-        $train[$data_index]['index'] = array_search($data['item'], $items);
+    foreach ($train_model as $data_index => $data) {
+        $train_model[$data_index]['index'] = array_search($data['item'], $item_array);
     }
 
     // co-occurrence matrix
-    $items_quantity = count($items);
+    $item_array_quantity = count($item_array);
     $co_occurrence = array();
-    for ($i = 0; $i < $items_quantity; $i++) {
-        for ($j = 0; $j < $items_quantity; $j++) {
+    for ($i = 0; $i < $item_array_quantity; $i++) {
+        for ($j = 0; $j < $item_array_quantity; $j++) {
             $co_occurrence[$i][$j] = 0;
         }
     }
-    foreach ($train as $data_x) {
-        foreach ($train as $data_y) {
+    foreach ($train_model as $data_x) {
+        foreach ($train_model as $data_y) {
             if ($data_x['user'] == $data_y['user']) {
                 $co_occurrence[$data_x['index']][$data_y['index']] += 1;
             }
@@ -64,36 +69,44 @@ function recommend($user) {
 
     // get score
     $score = array();
-    for ($i = 0; $i < $items_quantity; $i++){
+    for ($i = 0; $i < $item_array_quantity; $i++){
         $score[$i] = 0;
-        for($k = 0; $k < $items_quantity; $k++){
-            $score[$i] += $co_occurrence[$i][$k] * $prefs[$k];
+        for($k = 0; $k < $item_array_quantity; $k++){
+            $score[$i] += $co_occurrence[$i][$k] * $pref_array[$k];
         }
-        if ($prefs[$i] != 0) {
+        if ($pref_array[$i] != 0 || $item[$i] == $item_id) {
             $score[$i] = 0;
         }
     }
 
     // combine item and score
-    $result = array_combine($items, $score);
+    $result = array_combine($item_array, $score);
     arsort($result);
     foreach ($result as $key => $value) {
         echo "$key : $value\n";
     }
 
-    echo '<pre>';
-    // for ($i = 0; $i < $items_quantity; $i++) {
-    //     for ($j = 0; $j < $items_quantity; $j++) {
-    //         echo "\t".$co_occurrence[$i][$j];
-    //     }
-    //     echo '<br>';
-    // }
-    // print_r($train);
-    // print_r($users);
-    // print_r($items);
-    // var_dump($prefs);
-    // var_dump($score);
-    echo '</pre>';
+    if ($debug) {
+        echo '<pre>';
+        echo "co-occurrence matrix:\n";
+        for ($i = 0; $i < $item_array_quantity; $i++) {
+            for ($j = 0; $j < $item_array_quantity; $j++) {
+                echo "\t".$co_occurrence[$i][$j];
+            }
+            echo '<br>';
+        }
+        echo "train model:\n";
+        print_r($train_model);
+        echo "user vector:\n";
+        print_r($user_array);
+        echo "item vector:\n";
+        print_r($item_array);
+        echo "pref vector:\n";
+        print_r($pref_array);
+        echo "score vector:\n";
+        var_dump($score);
+        echo '</pre>';
+    }
 
 }
 

@@ -173,12 +173,12 @@ foreach ($item_type as $type) {
             
                 }
             
-                $sql = "INSERT INTO train_model (user_id, on_thing_id, type, is_purchased, is_liked, genre) ".
+                $sql = "INSERT INTO train_model (user_id, on_thing_id, type, is_purchased, is_liked, genre, create_time, modify_time) ".
             
-                       "VALUES ('$user_id', '$on_thing_id', '$type', '$is_purchased', '$is_liked', '$genre')";
+                       "VALUES ('$user_id', '$on_thing_id', '$type', '$is_purchased', '$is_liked', '$genre', '$now', '$now')";
             } else {
             
-                $sql .= ", ('$user_id', '$on_thing_id', '$type', '$is_purchased', '$is_liked', '$genre')";
+                $sql .= ", ('$user_id', '$on_thing_id', '$type', '$is_purchased', '$is_liked', '$genre', '$now', '$now')";
             
             }
             

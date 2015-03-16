@@ -2,12 +2,27 @@
 // running data
 $user_id = 1;
 $item_type = 'disc';
-$item_id = 98;
+$item_id = 1;
 $debug = false;
+
+if (!empty($_GET['user'])) {
+    $user_id = $_GET['user'];
+}
+if (!empty($_GET['type'])) {
+    $item_type = $_GET['type'];
+}
+if (!empty($_GET['item'])) {
+    $item_id = $_GET['item'];
+}
+if (!empty($_GET['debug'])) {
+    $debug = true;
+}
 
 include $_SERVER['DOCUMENT_ROOT'].'/_config/system_config.inc';
 
 function recommend($instance_user, $type, $item_id, $genre, $debug = false) {
+
+    $time = microtime(TRUE);
 
     $user_array = array();
     $item_array = array();
@@ -18,6 +33,7 @@ function recommend($instance_user, $type, $item_id, $genre, $debug = false) {
     $db_obj = new DatabaseAccess();
     $sql = "SELECT * FROM train_model WHERE genre = $genre AND type = '$type'";
     $query_instance = $db_obj->select($sql);
+    $model_counter = 0;
     foreach ($query_instance as $instance_data) {
         $user = $instance_data['user_id'];
         $item = $instance_data['on_thing_id'];
@@ -40,7 +56,11 @@ function recommend($instance_user, $type, $item_id, $genre, $debug = false) {
             $temp_pref_array[$item] = $pref;
         }
         array_push($train_model, $data);
+        $model_counter++;
     }
+    echo "train model size: $model_counter\n";
+    echo "loding train model: ".(microtime(true) - $time)." secs\n";
+    $time = microtime(true);
 
     // make viewing item's pref higher
     $temp_pref_array[$item_id] += 10;
@@ -70,8 +90,14 @@ function recommend($instance_user, $type, $item_id, $genre, $debug = false) {
     // user and item list
     $user_array = array_unique($user_array);
     sort($user_array);
+    echo "user model size: ".count($user_array)."\n";
+    echo "building user model: ".(microtime(true) - $time)." secs\n";
+    $time = microtime(true);
     $item_array = array_unique($item_array);
     sort($item_array);
+    echo "item model size: ".count($item_array)."\n";
+    echo "building item model: ".(microtime(true) - $time)." secs\n";
+    $time = microtime(true);
 
     // complete the prefs array
     $pref_array = array();
@@ -82,20 +108,34 @@ function recommend($instance_user, $type, $item_id, $genre, $debug = false) {
             $pref_array[$item_index] = 0.0;
         }
     }
+    echo "building pref model: ".(microtime(true) - $time)." secs\n";
+    $time = microtime(true);
 
     // establish item index in set
     foreach ($train_model as $data_index => $data) {
         $train_model[$data_index]['index'] = array_search($data['item'], $item_array);
     }
+    echo "building item index: ".(microtime(true) - $time)." secs\n";
+    $time = microtime(true);
 
     // co-occurrence matrix
     $item_array_quantity = count($item_array);
     $co_occurrence = array();
+    // $sql = "SELECT * FROM co_occurrence o WHERE o.method = 'genre' AND o.group = $genre AND o.type = '$type'";
+    // $query_instance = $db_obj->select($sql);
+    // foreach ($query_instance as $instance_data) {
+    //     $index = $instance_data['row_index'];
+    //     $co_occurrence[$index] = explode(',', $instance_data['row_value']);
+    // }
+    // echo "building co-occurrence matrix: ".(microtime(true) - $time)." secs\n";
+    // $time = microtime(true);
     for ($i = 0; $i < $item_array_quantity; $i++) {
         for ($j = 0; $j < $item_array_quantity; $j++) {
             $co_occurrence[$i][$j] = 0;
         }
     }
+    echo "building co-occurrence matrix: ".(microtime(true) - $time)." secs\n";
+    $time = microtime(true);
     foreach ($train_model as $data_x) {
         foreach ($train_model as $data_y) {
             if ($data_x['user'] == $data_y['user']) {
@@ -103,6 +143,8 @@ function recommend($instance_user, $type, $item_id, $genre, $debug = false) {
             }
         }
     }
+    echo "input co-occurrence matrix: ".(microtime(true) - $time)." secs\n";
+    $time = microtime(true);
 
     // get score
     $score = array();
@@ -115,10 +157,15 @@ function recommend($instance_user, $type, $item_id, $genre, $debug = false) {
             $score[$i] = 0;
         }
     }
+    echo "calculating score: ".(microtime(true) - $time)." secs\n";
+    $time = microtime(true);
 
     // combine item and score
     $result = array_combine($item_array, $score);
     arsort($result);
+    echo "combine score with item data: ".(microtime(true) - $time)." secs\n";
+    $time = microtime(true);
+    echo "=============================================\n";
 
     if ($debug) {
         echo '<pre>';
@@ -169,10 +216,10 @@ echo "type: ".$item_type."\n";
 echo "id: ".$item_id."\n";
 echo "title: ".$item_obj->title."\n";
 echo "genre: ".$item_obj->genre."\n";
-echo "artist_id: ".$item_obj->artist_id."\n";
+echo "artist_id: ".$item_obj->artist_id."\n\n";
 
 echo "=============================================\n";
-echo "User $x recommend top 10 result:\n";
+echo "User $user_id recommend top 10 result:\n";
 echo "=============================================\n";
 $result = recommend($user_id, $item_type, $item_id, $item_genre, $debug);
 unset($item_obj);

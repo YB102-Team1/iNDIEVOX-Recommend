@@ -116,6 +116,10 @@ $sql =
     `delete_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 $db_obj->query($sql);
+$sql = "ALTER TABLE `train_model` ADD PRIMARY KEY (`id`)";
+$db_obj->query($sql);
+$sql = "ALTER TABLE `train_model` MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT;";
+$db_obj->query($sql);
 
 // clear table
 $sql = "TRUNCATE train_model";

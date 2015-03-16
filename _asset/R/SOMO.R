@@ -26,8 +26,15 @@ disc = disc[, c(1,2,5,6)]
 
 
 #取disc分類第一群
-cluster_1 = disc[disc$genre=="2", -3]
+cluster_1 = disc[disc$genre=="1", -3]
 
+#假設某user正在觀看某item
+user=1
+item=808
+if(length(which(cluster_1$user==user))==0){
+  cluster_1 = rbind(cluster_1,c(user,item))
+  cluster_1[-1,3]=5
+}
 
 
 # Calculated User Lists
@@ -56,7 +63,7 @@ for(i in 1:length(users)){
   len = length(which(cluster_1$user==users[i]))
   
   #算出使用者users[i]曾經評價過的所有物品的和
-  sum = sum(cluster_1[which(cluster_1$user==users[i]),]$score)
+  sum = sum(cluster_1[which(cluster_1$user==users[i]),3])
   
   #m矩正為使用者與其平均分
   m[i,1] = users[i]
@@ -66,11 +73,12 @@ for(i in 1:length(users)){
 
 
 f = function(user){
+  
   #找出和輸入的user同群的user
   user_avg_score = m[which(m[,1] == user),2]
   r = round(user_avg_score,digits=0)
   members = m[which(round(m[,2],digits=0) == r),]
-    
+  
   score_of_members = matrix(- members[,2],byrow=T,nrow=length(items),ncol=length(members[,1]))
   
   #找出同群user對物品J的評價
@@ -87,25 +95,19 @@ f = function(user){
     }
   }
   w = matrix(0,nrow=length(members[,1]))
-
+  
   w_1 = 0
   w_2 = 0
   a=which(members[,1]==user)
   for(i in 1:length(members[,1])){
-    for(j in 1:length(items)){
-       
-      
- #     if(score_of_members[j,i]!=0 && score_of_members[j,a]!=0){
-        w_1 = w_1 + score_of_members[j,a]*score_of_members[j,i]
-        w_2 = (w_2 + (score_of_members[j,a]*score_of_members[j,i])^2)^(1/2)
- #     }
-      
+    for(j in 1:length(items)){                
+      #     if(score_of_members[j,i]!=0 && score_of_members[j,a]!=0){
+      w_1 = w_1 + score_of_members[j,a]*score_of_members[j,i]
+      w_2 = (w_2 + (score_of_members[j,a]*score_of_members[j,i])^2)^(1/2)
+      #     }       
     }
-    w[i] = w_1/w_2
-   
+    w[i] = w_1/w_2      
   }
-  
-  
   
   va = matrix(members[members[,1]==user,2],nrow=length(items))
   k = 1/colSums(w)
@@ -115,7 +117,11 @@ f = function(user){
   result = cbind(matrix(items,nrow=length(items)),result)
   colnames(result)=c('item','pref')
   result = result[order(result[,2],decreasing=T),]
-  return(result)
+  return(result) 
+    
+  
+  
+  
   
 }
 

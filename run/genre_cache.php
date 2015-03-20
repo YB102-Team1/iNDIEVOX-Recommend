@@ -1,32 +1,34 @@
+<pre>
 <?php
 include $_SERVER['DOCUMENT_ROOT'].'/_config/system_config.inc';
 $db_obj = new DatabaseAccess();
-$sql = "CREATE TABLE IF NOT EXISTS `co_occurrence` (
-    `id` int(11) unsigned NOT NULL,
-    `row_index` int(11) unsigned NOT NULL ,
-    `row_value` text NOT NULL ,
-    `method` varchar(30) NOT NULL ,
-    `group` int(11) unsigned NOT NULL ,
-    `type` enum('disc','song') NOT NULL ,
-    `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
-    `create_time` datetime NOT NULL,
-    `modify_time` datetime NOT NULL,
-    `delete_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-$db_obj->query($sql);
-$sql = "ALTER TABLE `co_occurrence` ADD PRIMARY KEY (`id`)";
-$db_obj->query($sql);
-$sql = "ALTER TABLE `co_occurrence` MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT;";
+// $sql = "CREATE TABLE IF NOT EXISTS `co_occurrence` (
+//     `id` int(11) unsigned NOT NULL,
+//     `row_index` int(11) unsigned NOT NULL ,
+//     `row_value` text NOT NULL ,
+//     `method` varchar(30) NOT NULL ,
+//     `group` int(11) unsigned NOT NULL ,
+//     `type` enum('disc','song') NOT NULL ,
+//     `is_deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
+//     `create_time` datetime NOT NULL,
+//     `modify_time` datetime NOT NULL,
+//     `delete_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+// ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+// $db_obj->query($sql);
+// $sql = "ALTER TABLE `co_occurrence` ADD PRIMARY KEY (`id`)";
+// $db_obj->query($sql);
+// $sql = "ALTER TABLE `co_occurrence` MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT;";
+// $db_obj->query($sql);
+
+// clear table
+$sql = "TRUNCATE co_occurrence";
 $db_obj->query($sql);
 
-$type_array = array('disc');
+// genre
+$type_array = array('disc', 'song');
 foreach ($type_array as $type) {
-    for ($genre = 1; $gerne <= 20; $genre++) {
-        if ($genre == 20) {
-            $sql = "SELECT * FROM train_model WHERE type = '$type'";
-        } else {
-            $sql = "SELECT * FROM train_model WHERE genre = $genre AND type = '$type'";
-        }
+    for ($genre = 1; $gerne <= 19; $genre++) {
+        $sql = "SELECT * FROM train_model WHERE genre = $genre AND type = '$type'";
         $query_instance = $db_obj->select($sql);
         $item_array = array();
         $train_model = array();
@@ -48,7 +50,6 @@ foreach ($type_array as $type) {
             );
             array_push($item_array, $item);
             array_push($train_model, $data);
-            $model_counter++;
         }
         $item_array = array_unique($item_array);
         sort($item_array);
@@ -78,3 +79,4 @@ foreach ($type_array as $type) {
     }
 }
 ?>
+</pre>

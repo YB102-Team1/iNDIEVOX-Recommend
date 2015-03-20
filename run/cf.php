@@ -4,6 +4,7 @@ $user_id = 1;
 $item_type = 'disc';
 $item_id = 1;
 $debug = false;
+$eval_method = 'genre';
 
 if (!empty($_GET['user'])) {
     $user_id = $_GET['user'];
@@ -20,7 +21,7 @@ if (!empty($_GET['debug'])) {
 
 include $_SERVER['DOCUMENT_ROOT'].'/_config/system_config.inc';
 
-function recommend($instance_user, $type, $item_id, $genre, $debug = false) {
+function recommend($instance_user, $type, $item_id, $eval_method, $debug = false) {
 
     $time = microtime(TRUE);
 
@@ -31,7 +32,26 @@ function recommend($instance_user, $type, $item_id, $genre, $debug = false) {
 
     // read the set (from database)
     $db_obj = new DatabaseAccess();
-    $sql = "SELECT * FROM train_model WHERE genre = $genre AND type = '$type'";
+    switch ($eval_method) {
+    case 'genre':
+    default:
+        switch ($item_type) {
+        case 'song':
+            $item_obj = new Song($item_id);
+            break;
+
+        case 'disc':
+            $item_obj = new Disc($item_id);
+            break;
+
+        }
+        break;
+        $genre = $item_obj->genre;
+        unset($item_obj);
+        $sql = "SELECT * FROM train_model WHERE genre = $genre AND type = '$type'";
+        break;
+
+    }
     $query_instance = $db_obj->select($sql);
     $model_counter = 0;
     foreach ($query_instance as $instance_data) {

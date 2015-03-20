@@ -27,3 +27,6 @@ Thumbs.db
 
 # sql segment #
 /_asset/sql/data/*.seg
+
+# R log #
+/_asset/R/.Rhistory

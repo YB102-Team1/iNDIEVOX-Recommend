@@ -18,6 +18,7 @@ class ArtistModel extends DataModel
     protected $artist_id;
     protected $type;
     protected $source;
+    protected $record_time;
 
     /**
      * inherited functions:

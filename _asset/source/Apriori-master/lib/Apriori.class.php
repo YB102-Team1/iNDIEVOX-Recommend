@@ -20,7 +20,7 @@ class Apriori {
     private $C           = array(); ///< Candidate itemsets
     private $rules       = array(); ///< Rules
     private $transCount  = 0;       ///< Transaction count
-    private $LLevels     = 2;       ///< Size of biggest set
+    private $LLevels     = 0;       ///< Size of biggest set
     private $minItemsets = 1;       ///< Minimal size of set (for solve())
     private $maxItemsets = -1;      ///< Maximal size of set (for generateRules())
 
@@ -413,7 +413,7 @@ class Apriori {
             self::debugInfo('Solve: new frequent itemsets of level %d' . PHP_EOL, $k);
         }
 
-        // $this->LLevels = count($this->L);
+        $this->LLevels = count($this->L);
         //free memory, C[1] is left in case of redo (solve)
         $this->C       = array_slice($this->C, 0, 1, true);
         return $this;
@@ -474,7 +474,7 @@ class Apriori {
                     $left  = (array) $items[0];
                     $right = (array) $items[1];
                     $this->addRule($left, $right, $set);
-                    // $this->addRule($right, $left, $set);
+                    $this->addRule($right, $left, $set);
                 } else {
                     for ($i = 0; $i < $k - 2; $i++) {
                         for ($j = 0; $j < $k - $i; $j++) {
@@ -482,7 +482,7 @@ class Apriori {
                             $left[] = $items[$i + $j];
                             $right  = array_diff($items, $left);
                             $this->addRule($left, $right, $set);
-                            // $this->addRule($right, $left, $set);
+                            $this->addRule($right, $left, $set);
                         }
                     }
                 }
@@ -674,8 +674,7 @@ class Apriori {
         //json_encode can eat "really" big amount of RAM
         if (!is_dir(dirname($gzDataFile)))
             @mkdir(dirname($gzDataFile), 0750, true);
-        // $res  = file_put_contents($gzDataFile, gzcompress(json_encode($data)));
-        $res  = file_put_contents($gzDataFile, json_encode($data));
+        $res  = file_put_contents($gzDataFile, gzcompress(json_encode($data)));
         if ($res === false || json_last_error() !== JSON_ERROR_NONE)
             throw new RuntimeException('Error while saving data');
 
@@ -719,8 +718,7 @@ class Apriori {
 
         self::debugInfo('LD: loading data from file(B)' . PHP_EOL);
 
-        // $data = json_decode(gzuncompress(file_get_contents($gzDataFile)), true);
-        $data = json_decode(file_get_contents($gzDataFile), true);
+        $data = json_decode(gzuncompress(file_get_contents($gzDataFile)), true);
         if (json_last_error() !== JSON_ERROR_NONE)
             throw new RuntimeException('Error while loading data');
 
@@ -819,7 +817,7 @@ class Apriori {
         self::$PRETTY_PROGRESS = (bool) $prettyProgress;
 
         if (self::$PRETTY_PROGRESS) {
-            require_once 'ProgressBar.php';
+            require_once 'Console/ProgressBar.php';
         }
     }
 

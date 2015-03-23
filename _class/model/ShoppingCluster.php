@@ -1,5 +1,5 @@
 <?php
-class ArtistModel extends DataModel
+class ShoppingCluster extends DataModel
 {
 
     /**
@@ -13,12 +13,13 @@ class ArtistModel extends DataModel
      * protected $modify_time;
      * protected $delete_time;
      */
-    protected $user_id;
-    protected $on_thing_id;
-    protected $artist_id;
-    protected $type;
-    protected $source;
-    protected $record_time;
+    protected $cluster_type;
+    protected $item_type;
+    protected $x;
+    protected $y;
+    protected $item_count;
+    protected $record_count;
+    protected $group_serial;
 
     /**
      * inherited functions:
@@ -28,5 +29,5 @@ class ArtistModel extends DataModel
      * public function recover() {}
      */
 
-}// end class ArtistModel
+}// end class ShoppingCluster
 ?>

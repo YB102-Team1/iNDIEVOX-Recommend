@@ -1,5 +1,5 @@
 <?php
-class TrainModel extends DataModel
+class SimilarArtist extends DataModel
 {
 
     /**
@@ -13,15 +13,11 @@ class TrainModel extends DataModel
      * protected $modify_time;
      * protected $delete_time;
      */
-    protected $user_id;
-    protected $on_thing_id;
-    protected $artist_id;
+    protected $artist1;
+    protected $artist2;
     protected $type;
-    protected $is_purchased;
-    protected $is_liked;
-    protected $genre;
-    protected $user_group;
-    protected $item_group;
+    protected $support;
+    protected $occurrence;
 
     /**
      * inherited functions:
@@ -31,5 +27,5 @@ class TrainModel extends DataModel
      * public function recover() {}
      */
 
-}// end class TrainModel
+}// end class SimilarArtist
 ?>

@@ -1,5 +1,5 @@
 <?php
-class ArtistModelGod extends DataModelGod
+class SimilarArtistGod extends DataModelGod
 {
 
     /**
@@ -19,5 +19,5 @@ class ArtistModelGod extends DataModelGod
      * public function create($class_property_array) {}
      */
 
-}// end class ArtistModelGod
+}// end class SimilarArtistGod
 ?>

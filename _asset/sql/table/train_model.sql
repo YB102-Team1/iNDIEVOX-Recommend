@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS `train_model` (
     `id` int(11) unsigned NOT NULL,
     `user_id` int(11) unsigned NOT NULL,
     `on_thing_id` int(11) unsigned NOT NULL,
+    `artist_id` int(11) unsigned NOT NULL,
     `type` enum('artist','disc','song','playlist') NOT NULL,
     `is_purchased` tinyint(1) unsigned NOT NULL,
     `is_liked` tinyint(1) unsigned NOT NULL,

@@ -3,10 +3,11 @@
 include $_SERVER['DOCUMENT_ROOT'].'/_config/system_config.inc';
 $db_obj = new DatabaseAccess();
 $sql_array = array(
-    "Disc-user" => "SELECT buyer_id data_id, COUNT(id) purchased, SUM(price) amount FROM buy_disc_record WHERE price != 0 GROUP BY buyer_id",
-    "Disc-disc" => "SELECT disc_id data_id, COUNT(id) purchased, SUM(price) amount FROM buy_disc_record WHERE price != 0 GROUP BY disc_id",
-    "Song-user" => "SELECT buyer_id data_id, COUNT(id) purchased, SUM(price) amount FROM buy_song_record WHERE buy_type = 'single_song' AND price != 0 GROUP BY buyer_id",
-    "Song-song" => "SELECT song_id data_id, COUNT(id) purchased, SUM(price) amount FROM buy_song_record WHERE buy_type = 'single_song' AND price != 0 GROUP BY song_id"
+    "user buy_disc_record" => "SELECT buyer_id data_id, COUNT(id) purchased, SUM(price) amount FROM buy_disc_record WHERE price != 0 GROUP BY buyer_id",
+    "disc buy_disc_record" => "SELECT disc_id data_id, COUNT(id) purchased, SUM(price) amount FROM buy_disc_record WHERE price != 0 GROUP BY disc_id",
+    // "disc buy_song_record" => "SELECT disc_id data_id, COUNT(id) purchased, SUM(price) amount FROM buy_song_record WHERE buy_type = 'whole_disc' AND price != 0 AND disc_id != 0 GROUP BY disc_id",
+    "user buy_song_record" => "SELECT buyer_id data_id, COUNT(id) purchased, SUM(price) amount FROM buy_song_record WHERE buy_type = 'single_song' AND price != 0 GROUP BY buyer_id",
+    "song buy_song_record" => "SELECT song_id data_id, COUNT(id) purchased, SUM(price) amount FROM buy_song_record WHERE buy_type = 'single_song' AND price != 0 GROUP BY song_id"
 );
 
 function eval_kmeans($data, $clusers_number) {
@@ -25,6 +26,8 @@ function eval_kmeans($data, $clusers_number) {
 }
 
 $sql = "TRUNCATE shopping_cluster";
+$db_obj->query($sql);
+$sql = "UPDATE train_model SET user_group = 0, item_group = 0";
 $db_obj->query($sql);
 
 foreach ($sql_array as $title => $sql) {
@@ -48,8 +51,8 @@ foreach ($sql_array as $title => $sql) {
     }
     asort($cluster_index_array);
 
-    echo "$title\t\t\t$clusers_number\n";
-    echo "x\ty\titem_number\trecord_number\n";
+    echo "$title\n";
+    echo "x\ty\titems\trecords\n";
 
     $group_number = 1;
     foreach ($cluster_index_array as $cluster_index => $x) {
@@ -57,28 +60,29 @@ foreach ($sql_array as $title => $sql) {
         echo $cluster->getX()."\t".$cluster->getY()."\t".count($cluster->getData())."\t".(count($cluster->getData()) * $cluster->getX())."\n";
         switch ($title) {
 
-        case 'Disc-user':
+        case 'user buy_disc_record':
             $data_type = 'disc';
             $cluster_type = 'user';
             $where_column = 'user_id';
             $group_column = 'user_group';
             break;
 
-        case 'Disc-disc':
+        case 'disc buy_disc_record':
+        case 'disc buy_song_record':
             $data_type = 'disc';
             $cluster_type = 'item';
             $where_column = 'on_thing_id';
             $group_column = 'item_group';
             break;
 
-        case 'Song-user':
+        case 'user buy_song_record':
             $data_type = 'song';
             $cluster_type = 'user';
             $where_column = 'user_id';
             $group_column = 'user_group';
             break;
 
-        case 'Song-song':
+        case 'song buy_song_record':
             $data_type = 'song';
             $cluster_type = 'item';
             $where_column = 'on_thing_id';

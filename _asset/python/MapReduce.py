@@ -1,7 +1,7 @@
 #-*-coding: utf-8 -*-
 
 from mrjob.job import MRJob
-from metrics import  correlation
+from metrics import correlation
 from metrics import jaccard, cosine, regularized_correlation
 from math import sqrt
 

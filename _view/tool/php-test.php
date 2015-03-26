@@ -1,5 +1,5 @@
 <?php
-SiteHelper::getNavBar('tool', $url);
+SiteHelper::getToolNavBar('tool', $url);
 ?>
 <form id="eval-code-form">
     &lt;?php<br>

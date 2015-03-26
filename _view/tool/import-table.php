@@ -1,5 +1,5 @@
 <?php
-SiteHelper::getNavBar('tool', $url);
+SiteHelper::getToolNavBar('tool', $url);
 ?>
 <form id="import-table-form" class="form-horizontal">
     <div class="control-group">

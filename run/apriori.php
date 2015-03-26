@@ -152,7 +152,7 @@ foreach ($rules as $data) {
             $db_obj->query($sql);
         }
         $now = date('Y-m-d H:i:s');
-        $sql = "INSERT INTO similar_artist (artist1, artist2, support, occurrence, create_time, modify_time) VALUES ('$artist1', '$artist2', '$support', '$occurrence', '$now', '$now'), ('$artist2', '$artist1', '$support', '$occurrence', '$now', '$now')";
+        $sql = "INSERT INTO similar_artist (source, target, support, occurrence, create_time, modify_time) VALUES ('$artist1', '$artist2', '$support', '$occurrence', '$now', '$now'), ('$artist2', '$artist1', '$support', '$occurrence', '$now', '$now')";
     } else {
         $sql .= ", ('$artist1', '$artist2', '$support', '$occurrence', '$now', '$now'), ('$artist2', '$artist1', '$support', '$occurrence', '$now', '$now')";
     }

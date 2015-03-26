@@ -1,5 +1,6 @@
 <pre>
 <?php
+ini_set('memory_limit', '2048M');
 include $_SERVER['DOCUMENT_ROOT'].'/_config/system_config.inc';
 $db_obj = new DatabaseAccess();
 
@@ -18,47 +19,45 @@ function recommend($user_id, $item_id, $artist_id, $genre, $segment) {
     $temp_pref_array = array();
     $train_model = array();
 
-    for ($i = 0; $i <= 4; $i++) {
-        if ($i != $segment) {
-            if (count($similar_artist)) {
-                $sql = "SELECT * ".
-                       "FROM model_set_$i ".
-                       "WHERE type = 'disc' ".
-                       "AND genre = $genre ".
-                       "AND artist_id IN ($similar_artist_list) ";
-            } else {
-                $sql = "SELECT * ".
-                       "FROM model_set_$i ".
-                       "WHERE type = 'disc' ".
-                       "AND genre = $genre";
-            }
-            $query_instance = $link->select($sql);
+    if (count($similar_artist)) {
+        $sql = "SELECT * ".
+               "FROM train_set_$segment ".
+               "WHERE type = 'disc' ".
+               "AND genre = $genre ".
+               "AND artist_id IN ($similar_artist_list) ";
+    } else {
+        $sql = "SELECT * ".
+               "FROM train_set_$segment ".
+               "WHERE type = 'disc' ".
+               "AND genre = $genre ".
+               "AND price!= 0";
+    }
+    echo $sql."\n";
+    $query_instance = $link->select($sql);
 
-            // read tarin model
-            foreach ($query_instance as $instance_data) {
-                $user = $instance_data['user_id'];
-                $item = $instance_data['on_thing_id'];
-                $pref = 0;
-                if ($instance_data['is_purchased'] == 1) {
-                    $pref += 3;
-                }
-                if ($instance_data['is_liked'] == 1) {
-                    $pref += 2;
-                }
-
-                $data = array(
-                    "user"=>$user,
-                    "item"=>$item,
-                    "pref"=>$pref
-                );
-                array_push($user_array, $user);
-                array_push($item_array, $item);
-                if ($user == $instance_user) {
-                    $temp_pref_array[$item] = $pref;
-                }
-                array_push($train_model, $data);
-            }
+    // read tarin model
+    foreach ($query_instance as $instance_data) {
+        $user = $instance_data['user_id'];
+        $item = $instance_data['on_thing_id'];
+        $pref = 0;
+        if ($instance_data['is_purchased'] == 1) {
+            $pref += 3;
         }
+        if ($instance_data['is_liked'] == 1) {
+            $pref += 2;
+        }
+
+        $data = array(
+            "user"=>$user,
+            "item"=>$item,
+            "pref"=>$pref
+        );
+        array_push($user_array, $user);
+        array_push($item_array, $item);
+        if ($user == $instance_user) {
+            $temp_pref_array[$item] = $pref;
+        }
+        array_push($train_model, $data);
     }
 
     // make this item pref higher
@@ -124,12 +123,14 @@ function recommend($user_id, $item_id, $artist_id, $genre, $segment) {
     $result = array_combine($item_array, $score);
     arsort($result);
 
+    unset($link);
+
     return array_slice($result, 0, 10, true);
 
 }
 
 for ($i = 0; $i <= 4; $i++) {
-    $sql = "SELECT * FROM model_set_$i WHERE is_purchased = 1 AND type = 'disc'";
+    $sql = "SELECT * FROM test_set_$i WHERE is_purchased = 1 AND type = 'disc' AND price != 0";
     $query_instance = $db_obj->select($sql);
     $test_model = array();
     foreach ($query_instance as $instance_data) {
@@ -151,7 +152,7 @@ for ($i = 0; $i <= 4; $i++) {
         }
     }
 
-    echo "round ".($i + 1).": ".($success / $total_size)."\n";
+    echo "set $i: ".(100 * $success / $total_size)." %\n";
 }
 
 unset($db_obj);

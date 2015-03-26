@@ -26,6 +26,9 @@ class DatabasePDO
       $this->link->query("SET time_zone='+8:00'");
       $this->link->query("SET NAMES UTF8");
 
+      $this->link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+      $this->link->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
    }// end function __construct
 
    public function insert($sql, $param=array())

@@ -130,8 +130,8 @@ class Disc extends DataModel
                 foreach ($t as $t2) {
                     $i = $item_index_array[$t1];
                     $j = $item_index_array[$t2];
-                    $co_occurrence[$i][$j]++;
-                    $co_occurrence[$j][$i]++;
+                    $co_occurrence[$i][$j] += 0.5;
+                    $co_occurrence[$j][$i] += 0.5;
                 }
             }
         }
@@ -172,21 +172,25 @@ class Disc extends DataModel
             $sql = "SELECT * ".
                    "FROM train_model ".
                    "WHERE type = 'disc' ".
-                   "AND genre = :genre ".
+                   // "AND genre = :genre ".
                    "AND artist_id IN ($similar_artist_list) ".
                    "AND item_group = :item_group";
+            $param = array(
+                // ':genre' => $this->genre,
+                ':item_group' => (4 - $user_group)
+            );
         } else {
             $sql = "SELECT * ".
                    "FROM train_model ".
                    "WHERE type = 'disc' ".
-                   "AND genre = :genre ".
+                   // "AND genre = :genre ".
                    "AND item_group = :item_group ".
                    "AND price != 0";
+            $param = array(
+                // ':genre' => $this->genre,
+                ':item_group' => (4 - $user_group)
+            );
         }
-        $param = array(
-            ':genre' => $this->genre,
-            ':item_group' => (4 - $user_group)
-        );
         $query_instance = $this->db_obj->select($sql, $param);
         
         // cf init

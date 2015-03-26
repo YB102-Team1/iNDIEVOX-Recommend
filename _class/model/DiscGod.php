@@ -185,6 +185,7 @@ class DiscGod extends DataModelGod
             }
 
             break;
+            
         }
 
         if (!empty($length)) {

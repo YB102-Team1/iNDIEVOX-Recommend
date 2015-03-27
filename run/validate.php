@@ -32,7 +32,6 @@ function recommend($user_id, $item_id, $artist_id, $genre, $segment) {
                "AND genre = $genre ".
                "AND price!= 0";
     }
-    echo $sql."\n";
     $query_instance = $link->select($sql);
 
     // read tarin model
@@ -130,29 +129,43 @@ function recommend($user_id, $item_id, $artist_id, $genre, $segment) {
 }
 
 for ($i = 0; $i <= 4; $i++) {
-    $sql = "SELECT * FROM test_set_$i WHERE is_purchased = 1 AND type = 'disc' AND price != 0";
+    // $sql = "SELECT * FROM train_set_$i WHERE type = 'disc' AND RAND() < 0.0035 LIMIT 100";
+    $sql = "SELECT * FROM train_set_$i WHERE type = 'disc' AND RAND() < 0.01 LIMIT 300";
     $query_instance = $db_obj->select($sql);
-    $test_model = array();
-    foreach ($query_instance as $instance_data) {
-        array_push($test_model, $instance_data);
-    }
-    $total_size = count($test_model);
-    $success = 0;
+    $test_time = 0;
+    $occurrence = 0;
+    $is_purchased = 0;
+    $priced = 0;
 
-    foreach ($test_model as $test_data) {
+    foreach ($query_instance as $instance_data) {
+        $user_id = $instance_data['user_id'];
         $result = recommend(
-            $test_data['user_id'], 
-            $test_data['on_thing_id'], 
-            $test_data['artist_id'],
-            $test_data['genre'],
+            $user_id, 
+            $instance_data['on_thing_id'], 
+            $instance_data['artist_id'],
+            $instance_data['genre'],
             $i
         );
-        if (in_array($test_data['on_thing_id'], $result)) {
-            $success++;
+        $disc_array = array();
+        foreach ($result as $disc_id => $score) {
+            array_push($disc_array, $disc_id);
         }
+        $disc_list = implode(',', $disc_array);
+        $sql = "SELECT id, price, is_purchased FROM test_set_$i WHERE user_id = $user_id AND type = 'disc' AND on_thing_id IN ($disc_list)";
+        $query_instance = $db_obj->select($sql);
+        foreach ($query_instance as $instance_data) {
+            if ($instance_data['is_purchased']) {
+                $is_purchased++;
+            }
+            if ($instance_data['price'] != '0') {
+                $priced++;
+            }
+            $occurrence++;
+        }
+        $test_time++;
     }
 
-    echo "set $i: ".(100 * $success / $total_size)." %\n";
+    echo "set $i: ".(100 * $occurrence / $test_time)." %, ".(100 * $is_purchased / $test_time)." %, ".(100 * $priced / $test_time)." %\n";
 }
 
 unset($db_obj);

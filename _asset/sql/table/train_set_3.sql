@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `train_model` (
+CREATE TABLE IF NOT EXISTS `train_set_3` (
     `id` int(11) unsigned NOT NULL,
     `user_id` int(11) unsigned NOT NULL,
     `on_thing_id` int(11) unsigned NOT NULL,
@@ -15,5 +15,5 @@ CREATE TABLE IF NOT EXISTS `train_model` (
     `modify_time` datetime NOT NULL,
     `delete_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-ALTER TABLE `train_model` ADD PRIMARY KEY (`id`);
-ALTER TABLE `train_model` MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+ALTER TABLE `train_set_3` ADD PRIMARY KEY (`id`);
+ALTER TABLE `train_set_3` MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;

@@ -5,7 +5,7 @@ SiteHelper::getToolNavBar('tool', $url);
     <div class="control-group">
         <label class="control-label" for="table-list">Import Table</label>
         <div class="controls">
-            <div class="span2" style="margin-left: 0;">
+            <div class="span3" style="margin-left: 0;">
                 <input type="hidden" id="table-list" name="table_list" value="" />
                 <table class="table table-bordered table-condensed">
                     <thead>
@@ -13,7 +13,7 @@ SiteHelper::getToolNavBar('tool', $url);
                     <tbody>
                         <tr>
                             <td><input type="checkbox" id="table-checkbox-all" /></td>
-                            <td class="span2"><strong>Table Name</strong></td>
+                            <td class="span3"><strong>Table Name</strong></td>
                         </tr>
                         <tr><td colspan="2"></td></tr>
                         <?php

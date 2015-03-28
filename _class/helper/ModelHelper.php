@@ -187,14 +187,19 @@ class ModelHelper
 
             $db_obj = new DatabaseAccess();
             $sql = file_get_contents($sql_path);
-            $create_result = $db_obj->query($sql);
+            $sql_array = explode(';', $sql);
+            foreach ($sql_array as $instance_sql) {
+                if (strlen($instance_sql) > 1) {
+                    $db_obj->query($instance_sql);
+                }
+            }
             // $sql = "ALTER TABLE `$table_name` ADD PRIMARY KEY (`id`);";
-            // $primary_key_result = $db_obj->query($sql);
+            // $db_obj->query($sql);
             // $sql = "ALTER TABLE `$table_name` MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT;";
-            // $auto_increment_result = $db_obj->query($sql);
+            // $db_obj->query($sql);
             unset($db_obj);
 
-            return $create_result;// && $primary_key_result && $auto_increment_result;
+            return true;
 
         }// end if (!file_exists($sql_path)) else
 

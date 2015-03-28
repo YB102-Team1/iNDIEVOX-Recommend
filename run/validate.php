@@ -4,7 +4,7 @@ ini_set('memory_limit', '2048M');
 include $_SERVER['DOCUMENT_ROOT'].'/_config/system_config.inc';
 $db_obj = new DatabaseAccess();
 
-function recommend($user_id, $item_id, $artist_id, $genre, $segment) {
+function recommend($config, $instance_user, $item_id, $artist_id, $genre, $segment) {
         
     $link = new DatabaseAccess();
 
@@ -19,19 +19,19 @@ function recommend($user_id, $item_id, $artist_id, $genre, $segment) {
     $temp_pref_array = array();
     $train_model = array();
 
-    if (count($similar_artist)) {
-        $sql = "SELECT * ".
-               "FROM train_set_$segment ".
-               "WHERE type = 'disc' ".
-               "AND genre = $genre ".
-               "AND artist_id IN ($similar_artist_list) ";
-    } else {
-        $sql = "SELECT * ".
-               "FROM train_set_$segment ".
-               "WHERE type = 'disc' ".
-               "AND genre = $genre ".
-               "AND price!= 0";
+    $sql = "SELECT * ".
+           "FROM train_set_$segment ".
+           "WHERE type = 'disc' ";
+    if ($config['priced']) {
+        $sql .= "AND price != 0 ";
     }
+    if ($config['artist'] && count($similar_artist)) {
+        $sql .= "AND artist_id IN ($similar_artist_list) ";
+    }
+    if ($config['genre']) {
+        $sql .= "AND genre = $genre ";
+    }
+
     $query_instance = $link->select($sql);
 
     // read tarin model
@@ -113,7 +113,7 @@ function recommend($user_id, $item_id, $artist_id, $genre, $segment) {
         for($k = 0; $k < $item_array_quantity; $k++){
             $score[$i] += $co_occurrence[$i][$k] * $pref_array[$k];
         }
-        if ($pref_array[$i] != 0 || $item[$i] == $item_id) {
+        if ($pref_array[$i] > 2 || $item[$i] == $item_id) {
             $score[$i] = 0;
         }
     }
@@ -128,45 +128,77 @@ function recommend($user_id, $item_id, $artist_id, $genre, $segment) {
 
 }
 
-for ($i = 0; $i <= 4; $i++) {
-    // $sql = "SELECT * FROM train_set_$i WHERE type = 'disc' AND RAND() < 0.0035 LIMIT 100";
-    $sql = "SELECT * FROM train_set_$i WHERE type = 'disc' AND RAND() < 0.01 LIMIT 300";
-    $query_instance = $db_obj->select($sql);
-    $test_time = 0;
-    $occurrence = 0;
-    $is_purchased = 0;
-    $priced = 0;
+// $test_config = array();
+// for ($priced = 0; $priced <= 1; $priced++) {
+//     for ($artist = 0; $artist <= 1; $artist++) {
+//        for ($genre = 0; $genre <= 1; $genre++) {
+//             $test_config[] = array(
+//                 "priced" => $priced,
+//                 "artist" => $artist,
+//                 "genre" => $genre
+//             );
+//         }
+//     }
+// }
 
-    foreach ($query_instance as $instance_data) {
-        $user_id = $instance_data['user_id'];
-        $result = recommend(
-            $user_id, 
-            $instance_data['on_thing_id'], 
-            $instance_data['artist_id'],
-            $instance_data['genre'],
-            $i
-        );
-        $disc_array = array();
-        foreach ($result as $disc_id => $score) {
-            array_push($disc_array, $disc_id);
-        }
-        $disc_list = implode(',', $disc_array);
-        $sql = "SELECT id, price, is_purchased FROM test_set_$i WHERE user_id = $user_id AND type = 'disc' AND on_thing_id IN ($disc_list)";
+// foreach ($test_config as $config) {
+$config = array(
+    "priced" => 1,
+    "artist" => 1,
+    "genre" => 1
+);
+
+    echo $config['priced']."\t".$config['artist']."\t".$config['genre']."\n";
+
+    for ($i = 0; $i <= 4; $i++) {
+        // $sql = "SELECT * FROM train_set_$i WHERE type = 'disc' AND RAND() < 0.0035 LIMIT 100";
+        $sql = "SELECT * FROM train_set_$i WHERE type = 'disc' AND RAND() < 0.01 LIMIT 300";
         $query_instance = $db_obj->select($sql);
+
+        $samples = 0;
+        $occurrence = 0;
+        $purchased = 0;
+        $priced = 0;
+
         foreach ($query_instance as $instance_data) {
-            if ($instance_data['is_purchased']) {
-                $is_purchased++;
+            $user_id = $instance_data['user_id'];
+            $result = recommend(
+                $config,
+                $user_id, 
+                $instance_data['on_thing_id'], 
+                $instance_data['artist_id'],
+                $instance_data['genre'],
+                $i
+            );
+            $disc_array = array();
+            foreach ($result as $disc_id => $score) {
+                array_push($disc_array, $disc_id);
             }
-            if ($instance_data['price'] != '0') {
-                $priced++;
+            if (count($disc_array)) {
+                $disc_list = implode(',', $disc_array);
+                $sql = "SELECT id, price, is_purchased FROM test_set_$i WHERE user_id = $user_id AND type = 'disc' AND on_thing_id IN ($disc_list)"; 
+                $query_instance = $db_obj->select($sql);
+                foreach ($query_instance as $instance_data) {
+                    if ($instance_data['is_purchased']) {
+                        $purchased++;
+                    }
+                    if ($instance_data['price'] != '0') {
+                        $priced++;
+                    }
+                    $occurrence++;
+                }
             }
-            $occurrence++;
+            $samples++;
         }
-        $test_time++;
+
+        echo "$samples\t$occurrence\t$purchased\t$priced\t";
+        echo (100 * $occurrence / $samples)."\t".(100 * $purchased / $samples)."\t".(100 * $priced / $samples)."\n";
+
     }
 
-    echo "set $i: ".(100 * $occurrence / $test_time)." %, ".(100 * $is_purchased / $test_time)." %, ".(100 * $priced / $test_time)." %\n";
-}
+    echo "\n";
+
+// }
 
 unset($db_obj);
 ?>

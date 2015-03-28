@@ -44,13 +44,12 @@ class Disc extends DataModel
             $sql = "SELECT * ".
                    "FROM train_model ".
                    "WHERE type = 'disc' ".
-                   "AND genre = :genre ".
-                   "AND artist_id IN ($similar_artist_list) ";
+                   "AND artist_id IN ($similar_artist_list) ".
+                   "AND price != 0";
         } else {
             $sql = "SELECT * ".
                    "FROM train_model ".
                    "WHERE type = 'disc' ".
-                   "AND genre = :genre ".
                    "AND price != 0";
         }
         $param = array(
@@ -172,22 +171,19 @@ class Disc extends DataModel
             $sql = "SELECT * ".
                    "FROM train_model ".
                    "WHERE type = 'disc' ".
-                   // "AND genre = :genre ".
                    "AND artist_id IN ($similar_artist_list) ".
-                   "AND item_group = :item_group";
+                   "AND item_group = :item_group ".
+                   "AND price != 0";
             $param = array(
-                // ':genre' => $this->genre,
                 ':item_group' => (4 - $user_group)
             );
         } else {
             $sql = "SELECT * ".
                    "FROM train_model ".
                    "WHERE type = 'disc' ".
-                   // "AND genre = :genre ".
                    "AND item_group = :item_group ".
                    "AND price != 0";
             $param = array(
-                // ':genre' => $this->genre,
                 ':item_group' => (4 - $user_group)
             );
         }
@@ -278,7 +274,7 @@ class Disc extends DataModel
             for($k = 0; $k < $item_array_quantity; $k++){
                 $score[$i] += $co_occurrence[$i][$k] * $pref_array[$k];
             }
-            if ($pref_array[$i] != 0 || $item[$i] == $this->id) {
+            if ($pref_array[$i] > 2 || $item[$i] == $this->id) {
                 $score[$i] = 0;
             }
         }

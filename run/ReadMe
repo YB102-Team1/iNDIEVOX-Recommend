@@ -2,6 +2,9 @@
 2. localhost/run/sync.php 將原始資料匯入資料庫
 3. localhost/run/build_train_model.php 建立 train model
 4. localhost/run/apriori.php 計算藝人相似度並寫入資料表
-5. localhost/run/run_cluster.php 計算使用者和唱片分群，記錄各群座標並且更新 train model 表格中的欄位
+5. localhost/run/run_cluster.php 計算使用者和唱片分群，記錄各群座標並且更新 train model 表格中的欄位'
+
+INSERT INTO user (id) SELECT DISTINCT source FROM similar_artist ORDER BY source
+
 6. localhost/run/model_set.php 將資料切成 5 個 set，每個 set 各有一個 train set 跟 test set
 7. localhost/run/validate.php 計算準確度

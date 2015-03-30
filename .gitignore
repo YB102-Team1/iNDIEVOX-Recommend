@@ -26,6 +26,11 @@ Thumbs.db
 /workspace/
 
 # sql segment #
+/_asset/sql/data/buy_disc_record.sql
+/_asset/sql/data/buy_song_record.sql
+/_asset/sql/data/disc.sql
+/_asset/sql/data/favorite.sql
+/_asset/sql/data/song.sql
 /_asset/sql/data/*.seg
 
 # R log #

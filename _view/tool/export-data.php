@@ -1,5 +1,5 @@
 <?php
-SiteHelper::getToolNavBar('tool', $url);
+SiteHelper::getNavBar('tool', $url);
 ?>
 <form id="export-data-form" class="form-horizontal">
     <div class="control-group">

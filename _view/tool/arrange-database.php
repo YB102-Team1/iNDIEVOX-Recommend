@@ -1,5 +1,5 @@
 <?php
-SiteHelper::getToolNavBar('tool', $url);
+SiteHelper::getNavBar('tool', $url);
 ?>
 <form id="arrange-database-form">
     <button type="submit" class="btn btn-primary">Arrange</button>

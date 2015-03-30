@@ -27,7 +27,7 @@ $(window).load(function() {
 
             });
 
-        $(document).pjax('a', '#main-section');
+        $(document).pjax('a.main-pjax', '#main-section');
 
     }
 

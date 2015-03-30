@@ -2,7 +2,7 @@
 class SiteHelper
 {
 
-    public static function getToolNavBar($type, $url)
+    public static function getNavBar($type, $url)
     {
 
         switch ($type) {
@@ -27,11 +27,34 @@ class SiteHelper
             );
             break;
 
+        default:
+        case 'site':
+            if (SiteHelper::isLogin()) {
+                if (SiteHelper::accessCheck('backyard')) {
+                    $nav_array = array(
+                        "排行榜" => "/",
+                        "後台" => "/b/",
+                        "登出" => "/logout.php?prev=$url"
+                    );
+                } else {
+                    $nav_array = array(
+                        "排行榜" => "/",
+                        "登出" => "/logout.php?prev=$url"
+                    );
+                }
+            } else {
+                $nav_array = array(
+                    "排行榜" => "/",
+                    "登入" => "/login.php?prev=$url"
+                );
+            }
+            break;
+
         }// end switch ($type)
 
-        include COMPONENT_ROOT.'/tool_navbar.php';
+        include COMPONENT_ROOT.'/navbar.php';
 
-    }// end function getToolNavBar
+    }// end function getNavBar
 
     public static function isLogin()
     {
@@ -78,24 +101,26 @@ class SiteHelper
 
         if (!self::isLogin()) {
 
-            $auth = sha1($account.'ManageAuth'.'0Ool1I');
-            setcookie('user_id', $account, 0 );
-            setcookie('user_auth', $auth, 0 );
+            $auth = sha1($user_id.'LoginAuth'.'0Ool1I');
+            setcookie('user_id', $user_id, false, "/", false);
+            setcookie('user_auth', $auth, false, "/", false);
 
         }
 
-        $json_data = array (
-            "code"=>$code,
-            "parameter"=>$parameter
-        );
+        return true;
 
-        header('Content-type: application/json');
+        // $json_data = array (
+        //     "code"=>$code,
+        //     "parameter"=>$parameter
+        // );
 
-        echo json_encode($json_data);
+        // header('Content-type: application/json');
+
+        // echo json_encode($json_data);
 
     }// end function login
 
-    public static function logout($user_id)
+    public static function logout()
     {
 
         $code = 0;
@@ -108,14 +133,16 @@ class SiteHelper
 
         }
 
-        $json_data = array (
-            "code"=>$code,
-            "parameter"=>$parameter
-        );
+        return true;
 
-        header('Content-type: application/json');
+        // $json_data = array (
+        //     "code"=>$code,
+        //     "parameter"=>$parameter
+        // );
 
-        echo json_encode($json_data);
+        // header('Content-type: application/json');
+
+        // echo json_encode($json_data);
 
     }// end function logout
 

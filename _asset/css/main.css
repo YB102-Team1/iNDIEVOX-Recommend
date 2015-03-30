@@ -5,8 +5,28 @@
 .navbar .nav .dropdown > a:hover {
     cursor: pointer;
 }
-.navbar-inverse .nav > li > a {
+.navbar-inverse .nav > li:first-child {
+    margin-left: 100px;
+}
+.navbar-inverse .nav > li > a:not([target="_blank"]) {
     background-color: transparent;
+    font-size: 25px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+input:focus:invalid,
+textarea:focus:invalid,
+select:focus:invalid {
+  color: #555555;
+  border-color: #679EDD;
+}
+input:focus:invalid:focus,
+textarea:focus:invalid:focus,
+select:focus:invalid:focus {
+  border-color: #679EDD;
+  -webkit-box-shadow: 0 0 6px #679EDD;
+     -moz-box-shadow: 0 0 6px #679EDD;
+          box-shadow: 0 0 6px #679EDD;
 }
 
 /* normal css */
@@ -34,4 +54,52 @@
 
 #main-section {
     margin: 0 3%;
+}
+
+/* helper class */
+.fwb {
+  font-weight: bold;
+}
+
+/* self-defined css */
+.jumbotron {
+  padding: 48px 0;
+}
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+footer {
+  margin-bottom: 60px;
 }

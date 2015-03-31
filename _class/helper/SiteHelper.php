@@ -8,7 +8,7 @@ class SiteHelper
         if (SiteHelper::isLogin()) {
             if (SiteHelper::accessCheck('backyard')) {
                 $nav_array = array(
-                    "排行榜" => "/index.php",
+                    "首頁" => "/index.php",
                     "後台" => "/b/index.php",
                     "PHP Test" => "/tool/php-test.php",
                     "Table & Data" => array(
@@ -29,13 +29,13 @@ class SiteHelper
                 );
             } else {
                 $nav_array = array(
-                    "排行榜" => "/",
+                    "首頁" => "/",
                     "登出" => "/logout.php?prev=$url"
                 );
             }
         } else {
             $nav_array = array(
-                "排行榜" => "/",
+                "首頁" => "/",
                 "登入" => "/login.php?prev=$url"
             );
         }
@@ -50,7 +50,7 @@ class SiteHelper
         return array(
             "音樂業務相關" => array(
                 "唱片銷售等級" => "/b/disc_cluster.php",
-                "唱片銷售排行榜" => "/b/disc_chart.php"
+                "唱片銷售首頁" => "/b/disc_chart.php"
             ),
             "售票業務相關" => array(
                 "藝人相似度" => "/b/similar_artist.php"

@@ -33,7 +33,7 @@
         <footer class="footer" style="text-align:center">
             <h1>&nbsp;</h1>
             <div id="footer-signature">
-                <div id="footer-signature-text"> BigData YB102 Team1 &copy; 2015 </div>
+                <div id="footer-signature-text"><u>I</u>nstitute for <u>I</u>nformation <u>I</u>ndustry Big Data YB102 Team1 &copy; 2015 </div>
             </div>
         </footer>
         <script src="/_asset/css/bootstrap/js/bootstrap.min.js"></script>

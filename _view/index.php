@@ -61,21 +61,55 @@ SiteHelper::getNavBar($url);
         </select>
         <span class="pull-right" style="margin-top: 15px;"><strong>依據：</strong></span>
     </div>
-    <?php
-    $type = 'download';
-    $genre = 0;
-    include COMPONENT_ROOT.'/disc/home_disc_list.php';
-    ?>
+    <div id="disc-list-block">
+        <?php
+        $type = 'download';
+        $genre = 0;
+        include COMPONENT_ROOT.'/disc/home_disc_list.php';
+        ?>
+    </div>
 </section>
 <script>
 $(document).ready(function() {
 
-    $(document.body).off('click', '.nav-list li:not(.active) a');
-    $(document.body).on('click', '.nav-list li:not(.active) a', function() {
+    function update_disc_block() {
 
-        $('.nav-list li.active').removeClass('active');
+        var type = $('#disc-list-type').val();
+        var genre = $('.nav-list > li.active > a').attr('data-genre');
+        $.ajax({
+            url: '/action/site/update-home-disc-list',
+            data: {
+                type: type,
+                genre: genre
+            },
+            type: 'post',
+            dataType: "html",
+            beforeSend: function () {
+                $('#system-message').html('載入中');
+                $('#system-message').show();
+            },
+            success: function(html_block) {
+                $('#disc-list-block').html(html_block);
+                $('#system-message').html('完成');
+                $('#system-message').fadeOut();
+            }
+        });
+
+    }
+
+    $(document.body).off('click', '.nav-list > li:not(.active) > a');
+    $(document.body).on('click', '.nav-list > li:not(.active) > a', function() {
+
+        $('.nav-list > li.active').removeClass('active');
         $(this).parent().addClass('active');
-        //update();
+        update_disc_block();
+
+    });
+
+    $(document.body).off('change', '#disc-list-type');
+    $(document.body).on('change', '#disc-list-type', function() {
+
+        update_disc_block();
 
     });
 

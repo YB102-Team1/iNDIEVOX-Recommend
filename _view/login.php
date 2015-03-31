@@ -1,6 +1,5 @@
 <?php
-SiteHelper::getNavBar('site', $url);
-
+SiteHelper::getNavBar($url);
 if (SiteHelper::isLogin()) {
     header("Refresh: 0; url=/index.php");
 }
@@ -10,12 +9,12 @@ if (SiteHelper::isLogin()) {
     <h3 class="form-signin-heading fwb">
         請輸入帳號密碼
     </h3>
-    <input id="user-id" class="form-control" type="text" autofocus="" required="" placeholder="請輸入帳號" style="margin-bottom: 0;" />
-    <input id="password" class="form-control" type="password" required="" placeholder="請輸入密碼" />
+    <input id="user-id" class="form-control input-xlarge" type="text" autofocus="" required="" placeholder="請輸入帳號" style="margin-bottom: 0;" />
+    <input id="password" class="form-control input-xlarge" type="password" required="" placeholder="請輸入密碼" />
     <input id="prev" type="hidden" value="<?php echo $_GET['prev']; ?>" />
     <h4>&nbsp;</h4>
-    <button id="login-btn" class="btn btn-lg btn-primary btn-block" type="button">
-        登入
+    <button id="login-btn" class="btn btn-lg btn-primary btn-block fwb" type="button">
+        <h4>登入</h4>
     </button>
 </form>
 <script>

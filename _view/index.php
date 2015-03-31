@@ -1,5 +1,5 @@
 <?php
-SiteHelper::getNavBar('site', $url);
+SiteHelper::getNavBar($url);
 ?>
 <div class="jumbotron">
     <h1>

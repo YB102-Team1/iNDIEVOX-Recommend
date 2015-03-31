@@ -1,3 +1,3 @@
 <?php
-SiteHelper::getNavBar('site', $url);
+SiteHelper::getNavBar($url);
 ?>

@@ -1,5 +1,5 @@
 <?php
-SiteHelper::getNavBar('tool', $url);
+SiteHelper::getNavBar($url);
 ?>
 <style>
 .remove-column-btn {

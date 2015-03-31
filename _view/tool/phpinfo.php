@@ -1,6 +1,4 @@
 <?php
-SiteHelper::getNavBar('tool', $url);
-?>
-<?php
+SiteHelper::getNavBar($url);
 phpinfo();
 ?>

@@ -1,37 +1,53 @@
 <?php
+SiteHelper::getNavBar($url);
+SiteHelper::getBackyardBreadcrumbs($url);
 $similar_artist_god_obj = new SimilarArtistGod();
 $similar_artist_arbor_code = $similar_artist_god_obj->getSimilarArtistArborCode();
 $similar_artist_source_array = $similar_artist_god_obj->getSimilarArtistSourceArray();
 unset($similar_artist_god_obj);
 ?>
-<div style="border: 3px solid black; width: 300px; height: 800px;" class="pull-left">
-    <div style="height: 27px; padding-left: 5px; border-bottom: 3px solid black;">
-        <input type="checkbox" id="toggle-checkbox-all" />
+<div style="width: 1200px; margin: 0 auto;">
+    <div style="border: 3px solid black; width: 300px; height: 800px;" class="pull-left">
+        <div style="height: 27px; border-bottom: 3px solid black;">
+            <table class="table table-condensed">
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td style="width: 15px;">
+                            <input type="checkbox" id="toggle-checkbox-all" />
+                        </td>
+                        <td style="width: 50px;">ID</td>
+                        <td>Name</td>
+                        <td style="width: 15px;">Edges</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style=" overflow-y: scroll; height: 770px;">
+            <table class="table table-condensed table-bordered table-striped">
+                <thead></thead>
+                <tbody>
+                    <?php
+                    foreach ($similar_artist_source_array as $artist_id => $data) {
+                    ?>
+                    <tr>
+                        <td style="width: 15px;"><input type="checkbox" value="<?php echo $artist_id; ?>" class="toggle-checkbox" /></td>
+                        <td style="width: 50px;"><?php echo $artist_id; ?></td>
+                        <td><?php echo $data['title']; ?></td>
+                        <td style="width: 15px;"><?php echo $data['edges']; ?></td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div style=" overflow-y: scroll; height: 770px;">
-        <table class="table table-condensed table-bordered table-striped">
-            <thead></thead>
-            <tbody>
-                <?php
-                foreach ($similar_artist_source_array as $artist_id => $data) {
-                ?>
-                <tr>
-                    <td><input type="checkbox" value="<?php echo $artist_id; ?>" class="toggle-checkbox" /></td>
-                    <td><?php echo $artist_id; ?></td>
-                    <td><?php echo $data['title']; ?></td>
-                    <td><?php echo $data['edges']; ?></td>
-                </tr>
-                <?php
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-<div id="halfviz" class="pull-left" style="border: 3px solid black; width: 800px; height: 800px; margin-left: 30px;">
-    <canvas id="viewport" width="800" height="800" style="background-color: slategray;"></canvas>
-    <div id="editor" style="display: none;">
-      <textarea id="code"><?php echo $similar_artist_arbor_code; ?></textarea>  
+    <div id="halfviz" class="pull-left" style="border: 3px solid black; width: 800px; height: 800px; margin-left: 30px;">
+        <canvas id="viewport" width="800" height="800" style="background-color: slategray;"></canvas>
+        <div id="editor" style="display: none;">
+          <textarea id="code"><?php echo $similar_artist_arbor_code; ?></textarea>  
+        </div>
     </div>
 </div>
 <script src="/_asset/js/arbor/jquery.address-1.4.min.js"></script>

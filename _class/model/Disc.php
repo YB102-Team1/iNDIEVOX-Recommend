@@ -52,9 +52,7 @@ class Disc extends DataModel
                    "WHERE type = 'disc' ".
                    "AND price != 0";
         }
-        $param = array(
-            ':genre' => $this->genre
-        );
+        $param = array();
         $query_instance = $this->db_obj->select($sql, $param);
         
         // cf init
@@ -283,9 +281,73 @@ class Disc extends DataModel
         $result = array_combine($item_array, $score);
         arsort($result);
 
-        return array_slice($result, 0, 3, true);
+        return array_slice($result, 0, 2, true);
 
     }// end function getPromoteDiscs
+
+    public function getIcon($size)
+    {
+
+        switch ($size) {
+        case '180':
+            $sql = "SELECT icon_180 icon FROM disc_icon WHERE disc_id = :disc_id LIMIT 1";
+            break;
+
+        case '480':
+        default:
+            $sql = "SELECT icon_480 icon FROM disc_icon WHERE disc_id = :disc_id LIMIT 1";
+            break;
+
+        }
+        $param = array(
+            ":disc_id" => $this->id
+        );
+
+        $query_instance = $this->db_obj->select($sql, $param);
+        $icon_url = '';
+        foreach ($query_instance as $instance_data) {
+            $icon_url = $instance_data['icon'];
+        }
+
+        return $icon_url;
+
+    }// end function getIcon
+
+    public function getFavoriteNumber()
+    {
+
+        $sql = "SELECT COUNT(id) count FROM favorite WHERE on_thing_id = :on_thing_id AND type = 'disc' GROUP BY on_thing_id";
+        $param = array(
+            ":on_thing_id" => $this->id
+        );
+
+        $query_instance = $this->db_obj->select($sql, $param);
+        $count_number = 0;
+        foreach ($query_instance as $instance_data) {
+            $count_number = $instance_data['count'];
+        }
+
+        return $count_number;
+
+    }// end function getFavoriteNumber
+
+    public function getDiscSongsNumber()
+    {
+
+        $sql = "SELECT COUNT(id) count FROM song WHERE disc_id = :disc_id GROUP BY disc_id";
+        $param = array(
+            ":disc_id" => $this->id
+        );
+
+        $query_instance = $this->db_obj->select($sql, $param);
+        $count_number = 0;
+        foreach ($query_instance as $instance_data) {
+            $count_number = $instance_data['count'];
+        }
+
+        return $count_number;
+
+    }// end function getDiscSongsNumber
 
 }// end class Disc
 ?>

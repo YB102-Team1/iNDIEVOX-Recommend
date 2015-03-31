@@ -43,7 +43,7 @@ class SimilarArtistGod extends DataModelGod
     public function getSimilarArtistSourceArray()
     {
 
-        $sql = "SELECT s.source user_id, CONCAT(s.source, u.title) title, COUNT(s.id) edges ".
+        $sql = "SELECT s.source user_id, u.title, COUNT(s.id) edges ".
                "FROM similar_artist s ".
                "LEFT JOIN user u ".
                "ON s.source = u.id ".
@@ -68,7 +68,7 @@ class SimilarArtistGod extends DataModelGod
     public function getSimilarArtistArborCode()
     {
 
-        $sql = "SELECT s.source user_id, CONCAT(s.source, u1.title) source, CONCAT(s.target, u1.title) target ".
+        $sql = "SELECT s.source user_id, u1.title source, u2.title target ".
                "FROM similar_artist s ".
                "LEFT JOIN user u1 ".
                "ON s.source = u1.id ".
@@ -78,7 +78,7 @@ class SimilarArtistGod extends DataModelGod
         $param = array();
 
         $query_instance = $this->db_obj->select($sql, $param);
-        $similar_artist_arbor_code = "{color:#aaaaaa}\n";
+        $similar_artist_arbor_code = "{color:#aaaaaa}\n-- {color:#e9eff0, weight:3}\n";
         $artist_array = array();
         foreach ($query_instance as $instance_data) {
             $user_id = $instance_data['user_id'];

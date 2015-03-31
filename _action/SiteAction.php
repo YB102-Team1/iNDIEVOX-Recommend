@@ -42,6 +42,12 @@ class SiteAction
 
             break;
 
+        case 'update-home-disc-list':
+            $type = $_POST['type'];
+            $genre = $_POST['genre'];
+            include COMPONENT_ROOT.'/disc/home_disc_list.php';
+            break;
+
         default:
             echo 'Undefined post action';
             break;

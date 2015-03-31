@@ -7,8 +7,8 @@ $similar_artist_source_array = $similar_artist_god_obj->getSimilarArtistSourceAr
 unset($similar_artist_god_obj);
 ?>
 <div style="width: 1200px; margin: 0 auto;">
-    <div style="border: 3px solid black; width: 300px; height: 800px;" class="pull-left">
-        <div style="height: 27px; border-bottom: 3px solid black;">
+    <div style="border: 2px solid gray; width: 300px; height: 800px;" class="pull-left">
+        <div style="height: 27px; border-bottom: 2px solid gray;">
             <table class="table table-condensed">
                 <thead></thead>
                 <tbody>
@@ -44,7 +44,7 @@ unset($similar_artist_god_obj);
         </div>
     </div>
     <div id="halfviz" class="pull-left" style="border: 3px solid black; width: 800px; height: 800px; margin-left: 30px;">
-        <canvas id="viewport" width="800" height="800" style="background-color: slategray;"></canvas>
+        <canvas id="viewport" width="800" height="800" style="background-color: #333333;"></canvas>
         <div id="editor" style="display: none;">
           <textarea id="code"><?php echo $similar_artist_arbor_code; ?></textarea>  
         </div>

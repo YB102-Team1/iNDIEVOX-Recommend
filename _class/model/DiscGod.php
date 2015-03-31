@@ -21,8 +21,6 @@ class DiscGod extends DataModelGod
     public function getDiscList($type, $genre = 0, $offset = 0, $length = 10)
     {
 
-        $now_date = date('Y-m-d');
-
         switch ($type) {
 
         case 'download':

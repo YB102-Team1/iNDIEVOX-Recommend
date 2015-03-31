@@ -51,12 +51,13 @@ select:focus:invalid:focus {
 }
 
 .error-help {
-        display: none;
-        color: #B94A48;
+    display: none;
+    color: #B94A48;
 }
 
 #main-section {
-        margin: 0 3%;
+    width: 1200px;
+    margin: 0 auto;
 }
 
 /* helper class */
@@ -136,4 +137,10 @@ footer {
 }
 .backyard-table a {
     color: #333333;
+}
+.nav-list a {
+    color: #333333;
+    font-size: 21px;
+    cursor: pointer;
+    line-height: 1.2em;
 }

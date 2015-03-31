@@ -1,37 +1,83 @@
 <?php
 SiteHelper::getNavBar($url);
 ?>
-<div class="jumbotron">
-    <h1>
-        Discover Your Own Music!
-    </h1>
-    <p class="lead">
-        Indiepadent Muisc,Indiepadent Life …
-    </p>
-    <p>
-        <a class="btn btn-lg btn-success" role="button" href="#">
-            Let's Find It!
-        </a>
-    </p>
-</div>
-<!--Example row of columns -->
-<div class="row" style="text-align:center">
-    <div class="col-lg-4">
-        <img class="img-circle" src="../img/Cover/LCD Soundsystem -This Is Happening.jpg" alt="Generic placeholder image" width="140" height="140">
-        <h2 style="text-align:center;">推薦功能</h2>
-        <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-    </div><!-- /.col-lg-4 -->
-    <div class="col-lg-4">
-        <img class="img-circle" src="../img/Cover/Arcade Fire - The Suburbs.jpg" alt="Generic placeholder image" width="140" height="140">
-        <h2 style="text-align:center;">促銷清單</h2>
-        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-    </div><!-- /.col-lg-4 -->
-    <div class="col-lg-4">
-        <img class="img-circle" src="../img/Cover/Mogwai - Hardcore Will Never Die,But You Will.jpg" alt="Generic placeholder image" width="140" height="140">
-        <h2 style="text-align:center;">藝人頁面</h2>
-        <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-    </div><!-- /.col-lg-4 -->
-</div><!-- /.row -->
+<section class="pull-left">
+    <?php
+    $genre_array = array(
+        "全部",
+        "搖滾",
+        "嘻哈/饒舌",
+        "電音/舞曲",
+        "流行",
+        "民謠",
+        "唱作人",
+        "另類",
+        "後搖滾",
+        "重金屬",
+        "龐克",
+        "雷鬼/放客",
+        "節奏藍調/靈魂",
+        "古典",
+        "藍調",
+        "爵士",
+        "原聲帶/新世紀音樂",
+        "世界音樂",
+        "宗教音樂",
+        "動漫音樂"
+    );
+    ?>
+    <h4>&nbsp;</h4>
+    <h3><strong>音樂類型</strong></h3>
+    <hr>
+    <ul class="nav nav-list fwb">
+        <?php 
+        foreach ($genre_array as $index => $title) {
+
+            if ($index == 0) {
+        ?>
+        <li class="active">
+            <a class="disc-genre-link" data-genre="<?php echo $index; ?>"><?php echo $title; ?></a>
+        </li>
+        <?php
+            } else {
+        ?>
+        <li>
+            <a class="disc-genre-link" data-genre="<?php echo $index; ?>"><?php echo $title; ?></a>
+        </li>
+        <?php
+            }
+        }
+        ?>
+    </ul>
+</section>
+<section class="pull-right">
+    <h4 style="margin-top: -5px;">&nbsp;</h4>
+    <div class="row">
+        <h3 class="pull-left">排行榜</h3>
+        <select id="disc-list-type" class="pull-right input-small" style="margin-top: 10px;">
+            <option value="download">熱賣</option>
+            <option value="favorite">人氣</option>
+            <option value="release">新鮮度</option>
+        </select>
+        <span class="pull-right" style="margin-top: 15px;"><strong>依據：</strong></span>
+    </div>
+    <?php
+    $type = 'download';
+    $genre = 0;
+    include COMPONENT_ROOT.'/disc/home_disc_list.php';
+    ?>
+</section>
+<script>
+$(document).ready(function() {
+
+    $(document.body).off('click', '.nav-list li:not(.active) a');
+    $(document.body).on('click', '.nav-list li:not(.active) a', function() {
+
+        $('.nav-list li.active').removeClass('active');
+        $(this).parent().addClass('active');
+        //update();
+
+    });
+
+});
+</script>

@@ -5,7 +5,8 @@ import sys, os
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-tables = ['buy_disc_record', 'buy_song_record', 'disc', 'favorite', 'song']
+# tables = ['buy_disc_record', 'buy_song_record', 'disc', 'favorite', 'song']
+tables = ['user']
 for table in tables:
     source_file_name = os.path.dirname(os.path.abspath(__file__)) + '/../sql/data/' + table + '.sql'
     source_file = open(source_file_name, 'r')

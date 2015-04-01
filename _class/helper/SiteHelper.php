@@ -25,18 +25,18 @@ class SiteHelper
                         "Arrnge Database" => "/tool/arrange-database.php"
                     ),
                     "PHP Info" => "/tool/phpinfo.php",
-                    "登出" => "/logout.php?prev=$url"
+                    "登出" => "/logout.php"
                 );
             } else {
                 $nav_array = array(
                     "首頁" => "/",
-                    "登出" => "/logout.php?prev=$url"
+                    "登出" => "/logout.php"
                 );
             }
         } else {
             $nav_array = array(
                 "首頁" => "/",
-                "登入" => "/login.php?prev=$url"
+                "登入" => "/login.php"
             );
         }
 

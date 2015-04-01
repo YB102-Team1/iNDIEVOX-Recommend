@@ -141,13 +141,22 @@ class Disc extends DataModel
                 $score[$i] += $co_occurrence[$i][$k] * $pref_array[$k];
             }
             if ($pref_array[$i] != 0 || $item[$i] == $this->id) {
-                $score[$i] = 0;
+                $score[$i] = -1;
             }
         }
 
         // combine item and score
-        $result = array_combine($item_array, $score);
-        arsort($result);
+        $temp_result = array_combine($item_array, $score);
+        arsort($temp_result);
+
+        $result = array();
+        foreach ($temp_result as $disc_id => $score) {
+            if ($score < 0) {
+                break;
+            } else {
+                $result[$disc_id] = $score;
+            }
+        }
 
         return array_slice($result, 0, 10, true);
 
@@ -273,13 +282,22 @@ class Disc extends DataModel
                 $score[$i] += $co_occurrence[$i][$k] * $pref_array[$k];
             }
             if ($pref_array[$i] > 2 || $item[$i] == $this->id) {
-                $score[$i] = 0;
+                $score[$i] = -1;
             }
         }
 
         // combine item and score
-        $result = array_combine($item_array, $score);
-        arsort($result);
+        $temp_result = array_combine($item_array, $score);
+        arsort($temp_result);
+
+        $result = array();
+        foreach ($temp_result as $disc_id => $score) {
+            if ($score == -1) {
+                break;
+            } else {
+                $result[$disc_id] = $score;
+            }
+        }
 
         return array_slice($result, 0, 2, true);
 

@@ -10,9 +10,12 @@
         <script src="/_asset/js/konami/jquery.konami.js"></script>
         <script src="/_asset/js/pjax/pjax.js"></script>
         <script src="/_asset/js/masonry/jquery.masonry.min.js"></script>
+        <script src="/_asset/js/d3/d3.min.js"></script>
+        <script src="/_asset/js/d3/nv.d3.min.js"></script>
 
         <link href="/_asset/css/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet"></link>
         <link href="/_asset/css/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"></link>
+        <link href="/_asset/css/d3/nv.d3.min.css" type="text/css" rel="stylesheet"></link>
         <!-- <link rel="stylesheet" href="/_asset/css/bootstrap/3.3.4/css/bootstrap.min.css"></link> -->
         <link href="/_asset/js/jquery-ui/css/dark-hive/jquery-ui-1.10.2.custom.min.css" type="text/css" rel="stylesheet"></link>
 

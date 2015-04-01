@@ -50,14 +50,16 @@ $genre_array = array(
             <h4 class="fwb"><span style="padding-left: 120px; padding-right: 20px;">音樂分類</span><?php echo $genre_array[$disc_obj->genre]; ?></h4>
             <h4 class="fwb"><span style="padding-left: 120px; padding-right: 20px;">發行日期</span><?php echo StringHelper::dateFormat($disc_obj->release_time, 0, 10); ?></h4>
             <h4 class="fwb"><span style="padding-left: 120px; padding-right: 20px;">加入最愛</span><?php echo $disc_obj->getFavoriteNumber(); ?></h4>
-            <div style="width: 360px; height: 182px;" class="text-center">
-                <button class="btn btn-danger btn-large" style="margin: 50px auto; padding: 30px;"><i class="icon-shopping-cart icon-white"></i>&nbsp;購買專輯&nbsp;$<?php echo 20 * $disc_obj->getDiscSongsNumber(); ?></button>
+            <div id="purchase-block" style="width: 370px; height: 185px; margin: 0;" class="text-center row">
+                <button id="purchase-btn" class="btn btn-danger btn-large" style="margin: 50px auto; padding: 30px;"><i class="icon-shopping-cart icon-white"></i>&nbsp;購買專輯&nbsp;$<?php echo 20 * $disc_obj->getDiscSongsNumber(); ?></button>
             </div>
         </div>
     </section>
     <section class="pull-right fwb" style="width: 800px; font-size: 1.5em; line-height: 1.5em;">
         <h1 style="margin-bottom: 20px;"><?php echo $disc_obj->title; ?></h1>
-        <?php echo nl2br($disc_obj->description); ?>
+        <div style="max-height: 600px; overflow-y: auto;">
+            <?php echo nl2br($disc_obj->description); ?>
+        </div>
     </section>
 </div>
 <?php
@@ -68,17 +70,17 @@ if (SiteHelper::isLogin()) {
 <div id="recommend-disc-block">
     <?php
     $recommend_disc_array = $disc_obj->getRecommendDiscs($_COOKIE['user_id']);
-    foreach ($recommend_disc_array as $disc_id => $score) {
+    foreach ($recommend_disc_array as $instance_disc_id => $score) {
 
-        $instance_disc_obj = new Disc($disc_id);
+        $instance_disc_obj = new Disc($instance_disc_id);
         $instance_user_obj = new User($instance_disc_obj->artist_id);
     ?>
     <div style="width: 240px; height: 300px;" class="box">
-        <a href="/disc/<?php echo $disc_id; ?>" class="main-pjax" title="<?php echo $instance_disc_obj->title; ?>">
+        <a href="/disc/<?php echo $instance_disc_id; ?>" class="main-pjax" title="<?php echo $instance_disc_obj->title; ?>">
             <img src="/_asset/img/disc.jpg" style="width: 220px; height: 220px;" class="img-polaroid" />
         </a>
         <h4 style="width: 220px; height: 20px; overflow: hidden;">
-            <a href="/disc/<?php echo $disc_id; ?>" class="main-pjax" title="<?php echo $instance_disc_obj->title; ?>">
+            <a href="/disc/<?php echo $instance_disc_id; ?>" class="main-pjax" title="<?php echo $instance_disc_obj->title; ?>">
                 <?php echo $instance_disc_obj->title; ?>
             </a>
         </h4>
@@ -93,12 +95,52 @@ if (SiteHelper::isLogin()) {
 </div>
 <script>
 $(document).ready(function() {
+
     $('#recommend-disc-block').masonry({
         itemSelector: '.box',
         columnWidth: 240
     });
+
+    $(document.body).off('click', '#purchase-btn');
+    $(document.body).on('click', '#purchase-btn', function () {
+        $.ajax({
+            url: '/action/site/buy-disc',
+            data: {
+                disc_id: <?php echo $disc_id; ?>,
+                user_id: <?php echo $_COOKIE['user_id']; ?>
+            },
+            type: 'post',
+            dataType: "html",
+            beforeSend: function () {
+                $('#system-message').html('購買中');
+                $('#system-message').show();
+            },
+            success: function(html_block) {
+                $('#purchase-block').html(html_block);
+                $('#system-message').html('完成');
+                $('#system-message').fadeOut();
+            }
+        });
+
+    });
+
 });
 </script>
 <?php 
+} else {
+?>
+<script>
+$(document).ready(function() {
+
+    $(document.body).off('click', '#purchase-btn');
+    $(document.body).on('click', '#purchase-btn', function () {
+
+        window.location = '/login.php?target=<?php echo $disc_id; ?>';
+
+    });
+
+});
+</script>
+<?php
 }
 ?>

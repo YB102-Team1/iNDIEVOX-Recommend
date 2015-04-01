@@ -2,18 +2,18 @@
 <?php
 $user_id = 122034;
 $item_type = 'disc';
-$item_id = 1;
+$item_id = 5784;
 
 include $_SERVER['DOCUMENT_ROOT'].'/_config/system_config.inc';
 switch ($item_type) {
 case 'song':
     $item_obj = new Song($item_id);
-    $result = $item_obj->getRecommendSongs($user_id);
+    $result = $item_obj->getPromoteDiscs($user_id);
     break;
 
 default:
     $item_obj = new Disc($item_id);
-    $result = $item_obj->getRecommendDiscs($user_id);
+    $result = $item_obj->getPromoteDiscs($user_id);
     break;
 }
 

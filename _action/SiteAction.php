@@ -30,7 +30,6 @@ class SiteAction
         case 'login':
             $user_id = $_POST['user_id'];
             $password = $_POST['password'];
-            $prev = $_POST['prev'];
             if ((int)$user_id == $user_id && (int)$user_id) {
                 SiteHelper::login($user_id);
             } else {
@@ -45,6 +44,12 @@ class SiteAction
             $type = $_POST['type'];
             $genre = $_POST['genre'];
             include COMPONENT_ROOT.'/disc/home_disc_list.php';
+            break;
+
+        case 'buy-disc':
+            $disc_id = $_POST['disc_id'];
+            $user_id = $_POST['user_id'];
+            include COMPONENT_ROOT.'/disc/recommend_disc_list.php';
             break;
 
         default:

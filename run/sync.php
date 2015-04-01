@@ -2,8 +2,8 @@
 include $_SERVER['DOCUMENT_ROOT'].'/_config/system_config.inc';
 $db_obj = new DatabaseAccess();
 // $tables = array('buy_disc_record', 'buy_song_record', 'disc', 'favorite', 'song');
-
 $tables = array('user');
+
 echo "<pre>";
 $command = escapeshellcmd("python ".$_SERVER['DOCUMENT_ROOT']."/_asset/python/split-sql.py");
 $output = shell_exec($command);

@@ -5,38 +5,44 @@ class SiteHelper
     public static function getNavBar($url)
     {
 
+        if ($_GET['disc_id']) {
+            $target = "?target=".$_GET['disc_id'];
+        } else {
+            $target = "";
+        }
+
         if (SiteHelper::isLogin()) {
             if (SiteHelper::accessCheck('backyard')) {
                 $nav_array = array(
                     "首頁" => "/index.php",
                     "後台" => "/b/index.php",
-                    "PHP Test" => "/tool/php-test.php",
-                    "Table & Data" => array(
-                        "Create Table" => "/tool/create-table.php",
-                        "Table" => array(
-                            "Export Table" => "/tool/export-table.php",
-                            "Import Table" => "/tool/import-table.php"
+                    "測試" => "/tool/php-test.php",
+                    "資料表與資料" => array(
+                        "建立資料表" => "/tool/create-table.php",
+                        "資料表" => array(
+                            "匯出資料表結構" => "/tool/export-table.php",
+                            "匯入資料表結構" => "/tool/import-table.php"
                         ),
-                        "Data" => array(
-                            "Export Data" => "/tool/export-data.php",
-                            "Sync Data" => "/tool/sync-data.php"
-                        ),
-                        "divider",
-                        "Arrnge Database" => "/tool/arrange-database.php"
+                        "資料" => array(
+                            "匯出資料表資料" => "/tool/export-data.php",
+                            "同步資料表資料" => "/tool/sync-data.php"
+                        )//,
+                        // "divider",
+                        // "Arrnge Database" => "/tool/arrange-database.php"
                     ),
                     "PHP Info" => "/tool/phpinfo.php",
-                    "登出" => "/logout.php"
+                    "登出" => "/logout.php$target"
                 );
             } else {
                 $nav_array = array(
                     "首頁" => "/",
-                    "登出" => "/logout.php"
+                    "登出" => "/logout.php$target"
                 );
             }
         } else {
             $nav_array = array(
                 "首頁" => "/",
-                "登入" => "/login.php"
+                "登入" => "/login.php$target"
             );
         }
 
@@ -50,7 +56,7 @@ class SiteHelper
         return array(
             "音樂業務相關" => array(
                 "唱片銷售等級" => "/b/disc_cluster.php",
-                "唱片銷售首頁" => "/b/disc_chart.php"
+                "唱片銷售排行" => "/b/disc_chart.php"
             ),
             "售票業務相關" => array(
                 "藝人相似度" => "/b/similar_artist.php"

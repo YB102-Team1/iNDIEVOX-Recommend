@@ -1,44 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.2.7
--- http://www.phpmyadmin.net
---
--- Host: localhost:3306
--- Generation Time: Mar 31, 2015 at 07:14 AM
--- Server version: 5.5.41-log
--- PHP Version: 5.6.3
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `yb102_team1`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) unsigned NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `icon` varchar(255) NOT NULL,
-  `fans` int(10) unsigned NOT NULL,
-  `description` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `user`
---
-
 INSERT INTO `user` (`id`, `title`, `url`, `icon`, `fans`, `description`) VALUES
 (1, '回聲樂團', 'http://www.indievox.com/echo', 'http://cdn-data.indievox.com/indievox_user/30000/1/pix/1180X180.jpg?1427684342', 3191, '回聲樂團 ECHO，主唱 吳柏蒼 / 吉他手 羅尹均 / 鼓手 慕春佑 / 貝斯手 邱文彥，音樂以新迷幻搖滾為基調，並融合浪漫派新詩文體。\n\n2002年以學生身分在水晶唱片發行首張專輯《感官駕馭》，獲得伍佰等數十位音樂及媒體人推薦。\n\n2007年用沉積五年的創作能量，以自由的追尋與內心的革命為命題，推出收錄24首歌曲的第二張專輯《巴士底之日》。並展開為期一年的一百場全台巡迴及「無所不在的回聲」演唱計畫。之後陸續與國際NGO合作公益紀念單曲，並於臺北聽奧期間舉行「心電回聲」科技藝術演唱會影音計畫。\n\n2011 年以第三張專輯《處女空氣》獲得金曲獎最佳樂團提名，隨後陸續前往美國 SXSW 音樂祭、紐約 CMJ 音樂節、英國利物浦《Sound City Festival》演出，贏得國際媒體一致好評。2013 年回聲樂團的影響力更觸及對岸，單曲〈時髦〉在 QQ 音樂點播逾 600 萬次，live 影片 1 個月點播破百萬，被對岸媒體封為「神曲」，更以「台灣騷青文化的代表」來形容回聲樂團。\n\n2014 年四月發行第四張專輯《獻給生命中的純粹》，繼「追尋、革命、新生」三部曲後，回聲樂團從自我的探索擴展至對世界的觀察：信仰、情慾、幻想、希望...那些形塑世代樣貌的色彩、光影，以及生命中的純粹。'),
 (3, 'kageisan', 'http://www.indievox.com/kagei', 'http://cdn3-data.indievox.com/indievox_user/30000/3/pix/3180X180.JPG?1427684342', 2, 'Please do it at the beach.'),
@@ -3595,17 +3554,3 @@ INSERT INTO `user` (`id`, `title`, `url`, `icon`, `fans`, `description`) VALUES
 (340925, 'ANTEMASQU', 'http://www.indievox.com/om_1425898760', 'http://cdn2-data.indievox.com/indievox_user/user180X180.png?1427692164', 0, ''),
 (340926, 'The Jam', 'http://www.indievox.com/om_1425898932', 'http://cdn-data.indievox.com/indievox_user/360000/340926/pix/340926180X180.jpg?1427692164', 0, 'The Jam 是一支來自英格蘭薩里郡的搖滾朋克風格樂隊。The Jam在1972年組成, 成員包括被認為最出色的主音及吉他手Paul Weller, 貝斯手Bruce Foxton, 鼓手Rick Buckler及樂隊成立早期時已離隊的吉他手Steve Brookes。\r\n\r\n在樂隊組成的十年之後, 由Paul Weller在1982年宣佈The Jam正式解散。\r\n\r\nThe Jam在英格蘭70年代被認為是Mod摩斯族文化的像徵, 更是Mod Revival的精神領袖, 可見The Jam當時在英國樂壇擁有相當的地位。 每一位隊員於演出時都經常穿上Mod文化時期十分流行, 剪裁時尚的西裝, Paul Weller後來更被尊稱為Mod之父(Modfather), 以表示其在The Jam時期為復興Mod (Mod Revival) 所作出貢獻。樂隊當時於英格蘭本土的影響力不遜於同樣帶有Mod風格的The Who樂隊,可是在其他國家的社會上,就遠遠地比不上後者的成就。\r\n\r\nThe Jam在活躍的十年間推出了多首歌曲, 包括出自Paul Weller手筆,充滿諷刺政治味道的 The Eton Rifles 及 Going Underground, 以及In The City, News Of The World, All Around The World, The Modern World 和 Art School 等等。'),
 (340927, 'Supertramp', 'http://www.indievox.com/om_1425899075', 'http://cdn1-data.indievox.com/indievox_user/360000/340927/pix/340927180X180.jpg?1427692164', 0, '70年代著名的新浪潮樂隊Supertramp的現場錄音集。樂隊成立於1969年，是由樂隊主唱兼keyboard手Rick Davies的一個億萬富翁的朋友出錢支持成立的，由於不用考慮商業效益，所以前期他們基本都沉醉於過份的SOLO中，動輒8、9分鐘的作品比比皆是，完全不顧主流市場的作法及天馬行空的浪漫風格儘管擁有了部分鐵杆FANS，但更多的是受到主流音樂評論家的刻薄批評，在74年的《Crime of the Century》的發行後更是達到登峰造極的地步，儘管這張專輯在今天看來是多麼的唯美。後來億萬富翁撤出了支持使得樂隊不得不為自己的生存問題考慮起來不得不趨向於主流，並在1979年發行了他們最成功的一張專輯《Breakfast in America 》，這張全球賣出1800萬的唱片不僅使Supertramp名聲大震，裏面的''take the Long Way Home''， ''the Logical Song'' 和 ''goodbye Stranger''都曾挺進過Single 10內，但也用光了他們所有的靈感，在這張專輯後他們也曾經嘗試不同風格比如R＆B、Blues等，但都未達到79年的高度，在進行了幾場巡演後，樂隊於84年解散。');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
- ADD PRIMARY KEY (`id`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -33,7 +33,6 @@ class SiteAction
             $prev = $_POST['prev'];
             if ((int)$user_id == $user_id && (int)$user_id) {
                 SiteHelper::login($user_id);
-                $parameter['url'] = $prev;
             } else {
                 $status = 'fail';
             }

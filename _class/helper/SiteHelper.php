@@ -55,8 +55,9 @@ class SiteHelper
 
         return array(
             "音樂業務相關" => array(
-                "唱片銷售等級" => "/b/disc_cluster.php",
-                "唱片銷售排行" => "/b/disc_chart.php"
+                "唱片銷售排行" => "/b/disc_chart.php",
+                "唱片叢集概況" => "/b/disc_sales.php",
+                "唱片叢集分布" => "/b/disc_cluster.php"
             ),
             "售票業務相關" => array(
                 "藝人相似度" => "/b/similar_artist.php"

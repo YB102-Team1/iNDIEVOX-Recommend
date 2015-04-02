@@ -16,11 +16,9 @@ SiteHelper::getBackyardBreadcrumbs($url);
     }
     <?php
     $train_model_god_obj = new TrainModelGod();
-    echo $train_model_god_obj->getClusterD3Code('disc');
+    echo $train_model_god_obj->getClusterD3Code('cluster_detail', 'disc');
     unset($train_model_god_obj);
     ?>
-
-    // data = randomData(3,400);
 
     var chart;
     nv.addGraph(function() {
@@ -33,40 +31,23 @@ SiteHelper::getBackyardBreadcrumbs($url);
         chart.xAxis.tickFormat(d3.format('.02f'));
         chart.yAxis.tickFormat(d3.format('.02f'));
         chart.tooltipContent(function(key, x, y) {
-            return '<h4>' + item_map[parseInt(x)][parseInt(y)] + '</h4>';
+            var item = item_map[parseInt(x)][parseInt(y)];
+            return '<h4>' + item.title + '</h4>' +
+                   '唱片編號：' + item.id + '<br>' +
+                   '唱片藝人：' + item.artist + '<br>' +
+                   '銷售次數：' + item.times + '<br>' +
+                   '目前定價：' + item.price + '<br>' +
+                   '銷售金額：' + item.amount + '<br>'
+                   ;
         });
 
         d3.select('#disc-cluster')
-            .datum(nv.log(data))
+            .datum(data)
             .call(chart);
 
         nv.utils.windowResize(chart.update);
         chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
         return chart;
     });
-
-
-    function randomData(groups, points) { //# groups,# points per group
-        var data = [],
-            shapes = ['circle'],
-            random = d3.random.normal();
-
-        for (i = 0; i < groups; i++) {
-            data.push({
-                key: 'Group ' + i,
-                values: []
-            });
-
-            for (j = 0; j < points; j++) {
-                data[i].values.push({
-                    x: random(),
-                    y: random(),
-                    size: Math.random(),
-                    shape: shapes[j % shapes.length]
-                });
-            }
-        }
-        return data;
-    }
 
 </script>

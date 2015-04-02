@@ -3,7 +3,7 @@ $disc_obj = new Disc($disc_id);
 $promote_disc_array = $disc_obj->getPromoteDiscs($user_id);
 if (count($promote_disc_array)) {
 ?>
-<h3 class="text-left">可加購商品</h3>
+<h3 class="text-left" style="padding-left: 20px;">可加購商品</h3>
 	<?php
 	foreach ($promote_disc_array as $instance_disc_id => $score) {
 

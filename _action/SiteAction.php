@@ -49,7 +49,13 @@ class SiteAction
         case 'buy-disc':
             $disc_id = $_POST['disc_id'];
             $user_id = $_POST['user_id'];
-            include COMPONENT_ROOT.'/disc/recommend_disc_list.php';
+            include COMPONENT_ROOT.'/disc/promote_disc_list.php';
+            break;
+
+        case 'update-disc-chart-block':
+            $type = $_POST['type'];
+            $genre = $_POST['genre'];
+            include COMPONENT_ROOT.'/b/disc_chart_block.php';
             break;
 
         default:

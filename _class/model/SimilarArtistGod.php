@@ -78,7 +78,7 @@ class SimilarArtistGod extends DataModelGod
         $param = array();
 
         $query_instance = $this->db_obj->select($sql, $param);
-        $similar_artist_arbor_code = "{color:#aaaaaa}\n-- {color:#e9eff0, weight:3}\n";
+        $similar_artist_arbor_code = "{color:#222299}\n-- {color:#e9eff0, weight:3}\n";
         $artist_array = array();
         foreach ($query_instance as $instance_data) {
             $user_id = $instance_data['user_id'];

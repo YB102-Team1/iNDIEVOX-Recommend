@@ -18,17 +18,7 @@ $map = SiteHelper::getBackyardMap();
             foreach ($category_content as $title => $url) {
             ?>
             <tr>
-                <?php 
-                if ($url == "/b/similar_artist.php") {
-                ?>
                 <td><a href="<?php echo $url; ?>"><?php echo $title; ?></a></td>
-                <?php
-                } else {
-                ?>
-                <td><a href="<?php echo $url; ?>" class="main-pjax"><?php echo $title; ?></a></td>
-                <?php
-                }
-                ?>
             </tr>
             <?php
             }

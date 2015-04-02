@@ -28,15 +28,15 @@ SiteHelper::getBackyardBreadcrumbs($url);
             .duration(300)
             .color(d3.scale.category10().range());
 
-        chart.xAxis.tickFormat(d3.format('.02f'));
-        chart.yAxis.tickFormat(d3.format('.02f'));
+        chart.xAxis.tickFormat(d3.format('.0f'));
+        chart.yAxis.tickFormat(d3.format('.0f'));
         chart.tooltipContent(function(key, x, y) {
             var item = item_map[parseInt(x)][parseInt(y)];
             return '<h4>' + item.title + '</h4>' +
                    '唱片編號：' + item.id + '<br>' +
                    '唱片藝人：' + item.artist + '<br>' +
-                   '銷售次數：' + item.times + '<br>' +
                    '目前定價：' + item.price + '<br>' +
+                   '銷售次數：' + item.times + '<br>' +
                    '銷售金額：' + item.amount + '<br>'
                    ;
         });

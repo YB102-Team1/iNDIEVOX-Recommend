@@ -64,6 +64,7 @@ function update_chart_color() {
 
     $('.nv-series-0').css('fill', chart_color);
     $('.nv-legend-symbol').css('fill', chart_color);
+    $('.nv-series > circle').hide();
 
 }
 

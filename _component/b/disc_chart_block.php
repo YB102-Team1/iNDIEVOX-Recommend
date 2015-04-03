@@ -33,7 +33,7 @@ unset($disc_god_obj);
         ?>
         <tr>
             <td><?php echo $data['disc_id']; ?></td>
-            <td><?php echo addslashes($data['title']); ?></td>
+            <td><a href="/disc/<?php echo $data['disc_id']; ?>" target="_blank"><?php echo addslashes($data['title']); ?></a></td>
             <td><?php echo addslashes($data['artist']); ?></td>
             <td><?php echo $data['score']; ?></td>
         </tr>

@@ -143,16 +143,18 @@ function recommend($config, $instance_user, $item_id, $artist_id, $genre, $segme
 
 // foreach ($test_config as $config) {
 $config = array(
-    "priced" => 1,
-    "artist" => 1,
-    "genre" => 1
+    "priced" => substr($_GET['c'], 0, 1),
+    "artist" => substr($_GET['c'], 1, 1),
+    "genre" => substr($_GET['c'], 2, 1)
 );
+$i = $_GET['i'];
 
-    echo $config['priced']."\t".$config['artist']."\t".$config['genre']."\n";
+    echo "[$i]\t".$config['priced']."\t".$config['artist']."\t".$config['genre']."\n";
 
-    for ($i = 0; $i <= 4; $i++) {
+    // for ($i = 0; $i <= 4; $i++) {
+
         // $sql = "SELECT * FROM train_set_$i WHERE type = 'disc' AND RAND() < 0.0035 LIMIT 100";
-        $sql = "SELECT * FROM train_set_$i WHERE type = 'disc' AND RAND() < 0.01 LIMIT 300";
+        // $sql = "SELECT t.* FROM train_set_$i t RIGHT JOIN (SELECT DISTINCT user_id FROM test_set_$i) x ON t.user_id = x.user_id WHERE t.type = 'disc' AND t.id IS NOT NULL AND RAND() < 0.12 LIMIT 300";
         $query_instance = $db_obj->select($sql);
 
         $samples = 0;
@@ -194,7 +196,7 @@ $config = array(
         echo "$samples\t$occurrence\t$purchased\t$priced\t";
         echo (100 * $occurrence / $samples)."\t".(100 * $purchased / $samples)."\t".(100 * $priced / $samples)."\n";
 
-    }
+    // }
 
     echo "\n";
 

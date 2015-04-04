@@ -7,8 +7,8 @@ $item_id = 5784;
 include $_SERVER['DOCUMENT_ROOT'].'/_config/system_config.inc';
 switch ($item_type) {
 case 'song':
-    $item_obj = new Song($item_id);
-    $result = $item_obj->getPromoteDiscs($user_id);
+    // $item_obj = new Song($item_id);
+    // $result = $item_obj->getPromoteDiscs($user_id);
     break;
 
 default:

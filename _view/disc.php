@@ -77,7 +77,7 @@ if (SiteHelper::isLogin()) {
     ?>
     <div style="width: 240px; height: 300px;" class="box">
         <a href="/disc/<?php echo $instance_disc_id; ?>" class="main-pjax" title="<?php echo $instance_disc_obj->title; ?>">
-            <img src="/_asset/img/disc.jpg" style="width: 220px; height: 220px;" class="img-polaroid" />
+            <img src="<?php echo $instance_disc_obj->getAPIIcon(180); ?>" style="width: 220px; height: 220px;" class="img-polaroid" />
         </a>
         <h4 style="width: 220px; height: 20px; overflow: hidden;">
             <a href="/disc/<?php echo $instance_disc_id; ?>" class="main-pjax" title="<?php echo $instance_disc_obj->title; ?>">

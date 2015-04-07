@@ -303,7 +303,7 @@ class Disc extends DataModel
 
     }// end function getPromoteDiscs
 
-    public function getIcon($size)
+    public function getIcon($size = '480')
     {
 
         switch ($size) {
@@ -330,6 +330,44 @@ class Disc extends DataModel
         return $icon_url;
 
     }// end function getIcon
+
+    public function getAPIIcon($size = '480')
+    {
+
+        $icon_url = self::getIcon($size);
+        if (empty($icon_url)) {
+
+            $url = "http://www.indievox.com/api/mobile/disc/profile/".$this->id."?app_id=B300000038";
+            $json_data = json_decode(file_get_contents($url), true);
+            $icon_180 = $json_data['response']['icon_m'];
+            $icon_480 = $json_data['response']['icon_480'];
+
+            $sql = "INSERT INTO disc_icon (disc_id, icon_180, icon_480) VALUES (:disc_id, :icon_180, :icon_480)";
+            $param = array(
+                ":disc_id" => $this->id,
+                ":icon_180" => $icon_180,
+                ":icon_480" => $icon_480
+            );
+            $this->db_obj->insert($sql, $param);
+
+            switch ($size) {
+
+            case '180':
+                $icon_url = $icon_180;
+                break;
+
+            case '480':
+            default:
+                $icon_url = $icon_480;
+                break;
+
+            }
+
+        }
+
+        return $icon_url;
+
+    }// getAPIIcon
 
     public function getFavoriteNumber()
     {

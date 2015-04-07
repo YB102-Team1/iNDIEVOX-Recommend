@@ -7,7 +7,7 @@ $similar_artist_source_array = $similar_artist_god_obj->getSimilarArtistSourceAr
 unset($similar_artist_god_obj);
 ?>
 <div style="width: 1200px; margin: 0 auto;">
-    <div style="border: 2px solid gray; width: 300px; height: 800px;" class="pull-left">
+    <div style="border: 2px solid gray; width: 360px; height: 800px;" class="pull-left">
         <div style="height: 27px; border-bottom: 2px solid gray;">
             <table class="table table-condensed">
                 <thead></thead>
@@ -18,7 +18,8 @@ unset($similar_artist_god_obj);
                         </td>
                         <td style="width: 50px;">ID</td>
                         <td>Name</td>
-                        <td style="width: 15px;">Edges</td>
+                        <td style="width: 10px;">Edges</td>
+                        <td style="width: 50px;">Fans</td>
                     </tr>
                 </tbody>
             </table>
@@ -29,14 +30,19 @@ unset($similar_artist_god_obj);
                 <tbody>
                     <?php
                     foreach ($similar_artist_source_array as $artist_id => $data) {
+
+                        if ($data['title'] != ' ' && $data['edges'] < $data['fans']) {
                     ?>
                     <tr>
                         <td style="width: 15px;"><input type="checkbox" value="<?php echo $artist_id; ?>" class="toggle-checkbox" /></td>
                         <td style="width: 50px;"><?php echo $artist_id; ?></td>
                         <td><?php echo $data['title']; ?></td>
-                        <td style="width: 15px;"><?php echo $data['edges']; ?></td>
+                        <td style="width: 10px; text-align: right;"><?php echo $data['edges']; ?></td>
+                        <td style="width: 15px; text-align: right;"><?php echo $data['fans']; ?></td>
                     </tr>
                     <?php
+                        }
+
                     }
                     ?>
                 </tbody>
@@ -70,7 +76,7 @@ $('#halfviz').ready(function () {
         var dom = $(elt)
 
         //repulsion, tension, friction, align-center
-        sys = arbor.ParticleSystem(1000, 80, 0.5, true)
+        sys = arbor.ParticleSystem(1000, 100, 0.5, true)
         sys.renderer = Renderer("#viewport") // our newly created renderer will have its .init() method called shortly by sys...
         sys.screenPadding(20)
 

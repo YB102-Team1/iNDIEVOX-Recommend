@@ -154,7 +154,7 @@ $i = $_GET['i'];
     // for ($i = 0; $i <= 4; $i++) {
 
         // $sql = "SELECT * FROM train_set_$i WHERE type = 'disc' AND RAND() < 0.0035 LIMIT 100";
-        // $sql = "SELECT t.* FROM train_set_$i t RIGHT JOIN (SELECT DISTINCT user_id FROM test_set_$i) x ON t.user_id = x.user_id WHERE t.type = 'disc' AND t.id IS NOT NULL AND RAND() < 0.12 LIMIT 300";
+        $sql = "SELECT t.* FROM train_set_$i t RIGHT JOIN (SELECT DISTINCT user_id FROM test_set_$i) x ON t.user_id = x.user_id WHERE t.type = 'disc' AND t.id IS NOT NULL AND RAND() < 0.12 LIMIT 300";
         $query_instance = $db_obj->select($sql);
 
         $samples = 0;

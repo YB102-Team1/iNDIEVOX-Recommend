@@ -43,7 +43,7 @@ class SimilarArtistGod extends DataModelGod
     public function getSimilarArtistSourceArray()
     {
 
-        $sql = "SELECT s.source user_id, u.title, COUNT(s.id) edges ".
+        $sql = "SELECT s.source user_id, u.title, COUNT(s.id) edges, u.fans ".
                "FROM similar_artist s ".
                "LEFT JOIN user u ".
                "ON s.source = u.id ".
@@ -57,7 +57,8 @@ class SimilarArtistGod extends DataModelGod
         foreach ($query_instance as $instance_data) {
             $similar_artist_source_array[$instance_data['user_id']] = array(
                 "title" => $instance_data['title'],
-                "edges" => $instance_data['edges']
+                "edges" => $instance_data['edges'],
+                "fans" => $instance_data['fans']
             );
         }
 

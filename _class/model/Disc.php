@@ -339,8 +339,18 @@ class Disc extends DataModel
 
             $url = "http://www.indievox.com/api/mobile/disc/profile/".$this->id."?app_id=B300000038";
             $json_data = json_decode(file_get_contents($url), true);
-            $icon_180 = $json_data['response']['icon_m'];
-            $icon_480 = $json_data['response']['icon_480'];
+
+            if ($json_data['response']['status']['code'] == 0) {
+
+                $icon_180 = $json_data['response']['icon_m'];
+                $icon_480 = $json_data['response']['icon_480'];
+
+            } else {
+
+                $icon_180 = '/_asset/img/disc.jpg';
+                $icon_480 = '/_asset/img/disc.jpg';
+
+            }
 
             $sql = "INSERT INTO disc_icon (disc_id, icon_180, icon_480) VALUES (:disc_id, :icon_180, :icon_480)";
             $param = array(

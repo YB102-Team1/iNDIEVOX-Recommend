@@ -18,8 +18,7 @@ unset($similar_artist_god_obj);
                         </td>
                         <td style="width: 50px;">ID</td>
                         <td>Name</td>
-                        <td style="width: 10px;">Edges</td>
-                        <td style="width: 50px;">Fans</td>
+                        <td style="width: 15px;">Edges</td>
                     </tr>
                 </tbody>
             </table>
@@ -37,8 +36,7 @@ unset($similar_artist_god_obj);
                         <td style="width: 15px;"><input type="checkbox" value="<?php echo $artist_id; ?>" class="toggle-checkbox" /></td>
                         <td style="width: 50px;"><?php echo $artist_id; ?></td>
                         <td><?php echo $data['title']; ?></td>
-                        <td style="width: 10px; text-align: right;"><?php echo $data['edges']; ?></td>
-                        <td style="width: 15px; text-align: right;"><?php echo $data['fans']; ?></td>
+                        <td style="width: 15px; text-align: right;"><?php echo $data['edges']; ?></td>
                     </tr>
                     <?php
                         }
